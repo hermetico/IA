@@ -1,3 +1,16 @@
+# -*- coding: utf-8 -*-
+"""
+    spock
+    ~~~~~~~~~~~~~~
+
+    Rock Paper Scissors Spock Lizard Game
+    Se solicita al jugador que escoja una jugada, despues se muestra la jugada
+    del ordenador y el ganador.
+    Cuando el jugador decide salir, se muestra el numero de victorias y derrotas
+
+    :creador por Juan Marín y Dennis Quitaquís
+"""
+
 # spock.py
 # programa per jugar al joc Pedra paper estissores, spock, llangardaix
 
