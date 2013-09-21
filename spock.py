@@ -68,10 +68,10 @@ def solicitar_jugada():
     print SOLICITAR
     # mostramos las jugadas disponibles y el numero relacionado
     for i in range(len(JUGADAS)):
-        print "Press %i for play with %s" %(i, JUGADAS[i])
+        print "Press %i to play with %s" %(i, JUGADAS[i])
     
     # mostramos el valor a pulsar para salir
-    print "Press %i for exit" %SALIR
+    print "Press %i to exit" %SALIR
     
     return input(">> ")
 
