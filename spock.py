@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
     spock
-    ~~~~~~~~~~~~~~
+    ~~~~~
 
     Rock Paper Scissors Spock Lizard Game
     Se solicita al jugador que escoja una jugada, despues se muestra la jugada
