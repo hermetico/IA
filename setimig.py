@@ -2,9 +2,12 @@
 """
     setimig.py
     ~~~~~~~~~~
-
-
-
+    Pograma que juega al "setimig" con el usuario.
+    Se iran dando cartas al usuario, hasta que este no quiera
+    mas o se pase del limite de puntos: 7.5
+    Asi mismo, la maquina tambien ira pidiendo cartas y
+    parara de pedir cuando vea que con la siguiente carta se 
+    pasa del limite.
 
     :creado por Juan Marín y Dennis Quitaquís
 """
@@ -32,13 +35,14 @@ WINNER_TIME = """
 
 OTRA_CARTA = "Do you want a card? (y/n)"
 
-YOU_LOSE = "Oohhh!! You lost, you have reached the limit!"
-
-
+GAME_OVER = """
+    Oohhh!! You lost, you have reached the limit!\n
+            GAME OVER!
+"""
 
 
 def dar_carta(shuffle_cards):
-    """Funcion que dona carta al jugador si aquet solicita"""
+    """Funcion que da carta al jugado si este lo solicita"""
 
     print OTRA_CARTA
     r = raw_input(">> ")
@@ -64,49 +68,53 @@ def main():
     suma_jugador = 0
     suma_maquina = 0
 
-    print SALUDO
+    print SALUDO # Saludamos al usuario
 
-    cards = barajar_cartas()
+    cards = barajar_cartas() # Barajamos las cartas
 
     print PLAYER_TIME
 
     while can_continue:
 
-        card = dar_carta(cards)
+        card = dar_carta(cards) # Preguntamos al usuario si quiere carta
 
         if card:
             print "It is the card %s and costs %.1f" %(str(card), CARTAS[card])
-            suma_jugador += CARTAS[card]
+            suma_jugador += CARTAS[card] # Suamos los puntos de la carta tocada.
             
-            if suma_jugador > 7.5:
-                print YOU_LOSE
+            if suma_jugador > 7.5: # Si se pasa del limite, el usuario pierdey acaba el juego.
+                print GAME_OVER
                 return
                 
-        else:
+        else: #Si no quiere carta, turno de la maquina
             can_continue = False
 
     can_continue = True
 
+    # Turno de la maquina
     print MACHINE_TIME
 
     while can_continue:
 
-        card = cards.pop()
+        card = cards.pop() # Cogemos carta
 
         if (suma_maquina + CARTAS[card] > 7.5):
-            can_continue = False
+            can_continue = False # Si se pasa del limite, la maquina para de jugar
         else:
             print "The machine takes the card %s that it costs %.1f" %(str(card), CARTAS[card])
             suma_maquina += CARTAS[card]
         
-        delay(2)
+        delay(2) # Esperamos 2 segundos para que escoja de nuevo otra carta la maquina
 
+    # Anunciamos el ganador
     print WINNER_TIME
     print "And the winner is...",
     if (suma_jugador > suma_maquina):
-        print "the player 1 with %.1f points vs %.1f points!!" %(suma_jugador, suma_maquina)
+        print "the player 1 with %.1f points vs %.1f points of the machine!!" %(suma_jugador, suma_maquina)
+    elif (suma_jugador == suma_maquina):
+        print "That was a draw!!! No winner this time, more lucky next time :) "
     else:
-        print "the machine with %.1f vs %.1f!!" %(suma_maquina, suma_jugador)
+        print "the machine with %.1f points vs %.1f points of the player 1!!" %(suma_maquina, suma_jugador)
 
 
 
