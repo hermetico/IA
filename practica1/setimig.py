@@ -42,7 +42,7 @@ GAME_OVER = """
 
 
 def dar_carta(shuffle_cards):
-    """Funcion que da carta al jugado si este lo solicita"""
+    """Funcion que da carta al jugador si este lo solicita"""
 
     print OTRA_CARTA
     r = raw_input(">> ")
