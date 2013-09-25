@@ -9,6 +9,7 @@
 """
 from datetime import datetime as dt
 from time import time
+from os import system
 
 #: definimos el patron del timestamp 
 # dia - mes - año hora:minutos-segundos 
@@ -18,10 +19,8 @@ TIME_PATHERN = '%d-%m-%Y %H:%M:%S'
 tasques = {}
 
 def timestamp(pathern = None):
-    """
-    Retorna un objecte del tipus datetime
-    a partir d'un timestamp com a parametre
-    d'entrada.
+    """Retorna un objecte del tipus datetime  a partir d'un timestamp 
+    com a parametre d'entrada.
     El format per defecte es '%d-%m-%Y'
     """
     time_pathern = pathern or '%d-%m-%Y'
@@ -29,12 +28,12 @@ def timestamp(pathern = None):
 
 
 class Tasca:
-    """ Implementa l'estructura d'una tasca"""
+    """Implementa l'estructura d'una tasca"""
     def __init__(self, id, descripcio):
         self.id = id
         self.descripcio = descripcio
         self.done = False
-        self.creacio = timestamp(TIME_PATHERN)
+        self.creacio = timestamp()
         self.finalitzacio = None
     
     def __str__(self):
@@ -46,19 +45,21 @@ class Tasca:
         return "%(fecha)s | %(id)i | %(desc)s " % values
 
     def finalitzar(self):
-        """ 
-        Posa el parametre done a True i genera un timestamp
+        """Posa el parametre done a True i genera un timestamp
         com a data de finalitzacio
         """
         self.done = True
-        self.finalitzar_tasca = timestamp(TIME_PATHERN)
+        self.finalitzacio = timestamp(TIME_PATHERN)
 
+
+def pausar():
+    """Mostra un avis per pantalla i espera que l'usuari premi una tecla"""
+    return raw_input("Prem cualsevol tecla per continuar\n>>> ")
+    
 
 def crear_nova_id_tasca():
-    """
-    Funcio que crea una id a per a la següent practica
+    """Funcio que crea una id a per a la següent practica
     assegurant aixi que no hi hagin id's coincidents
-    
     Retorna 1 si es la primera tasca o ultima id + 1
     """
     # comprobamos  si hay o no tasques
@@ -69,43 +70,57 @@ def crear_nova_id_tasca():
 
 
 def crear_editar_tasca(id = None):
-    """
-    Funcio que serveix per crear una tasca o editarla
-    segons el parametre de entrada id
+    """Funcio que serveix per crear una tasca o editarla segons el parametre 
+    de entrada id
     Si id == None es genera una nova id pera  la tasca
     """
     id_tasca = id or crear_nova_id_tasca()
-    descripcio = raw_input("Afegeix una descripcio pera a la tasca %i: "%id_tasca)
+    descripcio = raw_input("Afegeix una descripcio pera a la tasca %i:" \
+                           "\n>>> "%id_tasca)
     tasques[id_tasca] = Tasca(id_tasca, descripcio)
 
 
 def mostrar_tasques():
-    """ Mostra totes les tasques """
+    """Mostra totes les tasques"""
+    print
+    print "Tasques:"
+    print "--------"
     for i in [tasca for tasca in tasques.values() if tasca]:
         print i
+    print "--------"
+
 
 
 def mostrar_tasques_no_finalitzades():
-    """ Mostra totes les tasques no finalitzades """
+    """Mostra totes les tasques no finalitzades"""
+    print
+    print "Tasques no finalitzades:"
+    print "------------------------"
     for i in [tasca for tasca in tasques.values() if tasca and not tasca.done]:
         print i
+    print "------------------------"
 
 
 def mostrar_tasques_finalitzades():
-    """ Mostra les tasques finalitzades """
+    """Mostra les tasques finalitzades"""
+    print
+    print "Tasques finalitzades:"
+    print "---------------------"
     for i in [ tasca for tasca in tasques.values() if tasca and tasca.done ]:
-        print i + " | " + str(i.finalitzacio) 
+        print str(i) + " | " + str(i.finalitzacio) 
+    print "---------------------"
 
 
 def eliminar_tasca():
-    """
-    Mostra totes les tasques i demana la id per eliminar
+    """Mostra totes les tasques i demana la id per eliminar
     i una confirmacio
     """
     mostrar_tasques()
-    id = input("Introdueix la id de la tasca a eliminar:\n >>> ")
-    if(tasques.has_key(id)):
-        if raw_input("Confirma que vols eliminar la tasca %i (y/n)" % id) == "y":
+    id = input("Introdueix la id de la tasca a eliminar:\n>>> ")
+    if id in tasques:
+        confirm = raw_input("Confirma que vols eliminar la tasca %i (y/n):" \
+                            "\n>>> " % id)
+        if confirm  == "y":
             tasques[id] = None
     else:
         print "Tasca no reconeguda" 
@@ -114,13 +129,14 @@ def eliminar_tasca():
 def finalitzar_tasca():
     """ Mostra les tasques pendents, demana la id i una confirmacio """
     mostrar_tasques_no_finalitzades()
-    id = input("Introdueix la id de la tasca a finalitzar:\n >>> ")
-    if(tasques.has_key(id)):
-        if raw_input("Confirma que vols finalitzar la tasca %i (y/n)" % id) == "y":
+    id = input("Introdueix la id de la tasca a finalitzar:\n>>> ")
+    if id in tasques:
+        confirm = raw_input("Confirma que vols finalitzar la tasca %i (y/n):" \
+                            "\n>>> " % id)
+        if confirm == "y":
             tasques[id].finalitzar()
     else:
         print "Tasca no reconeguda" 
-
 
 def editar_tasca():
     """
@@ -128,9 +144,9 @@ def editar_tasca():
     a editar i finalment demana la descripcio nova
     """
     mostrar_tasques_no_finalitzades()
-    id = input("Introdueix la id de la tasca a editar\n >>> ")
-    if(tasques.has_key(id) and tasques[id]): # tambe comprobem que tasques[i] != None
-        desc = raw_input("Insereix la nova descripcio:\n >>> ")
+    id = input("Introdueix la id de la tasca a editar\n>>> ")
+    if(id in tasques and tasques[id]): # tambe comprobem que tasques[i] != None
+        desc = raw_input("Insereix la nova descripcio:\n>>> ")
         tasques[id].descripcio = desc
     else:
         print "Tasca no reconeguda" 
@@ -158,40 +174,39 @@ def menu():
             'label' : 'Mostrar tasques finalitzades',
             'funcio' : mostrar_tasques_finalitzades
         },
-        -1 : { 'label' :'Sortir' }
+        9 : { 'label' :'Sortir' }
 }
 
     continuar = True
     while(continuar):
+        system('clear')
         for key, value in opcions_menu.items():
             print str(key) + " - " + value['label']
         
         opcio = input(">>> ")
         
-        if(opcions_menu.has_key(opcio)):
-            if opcio == -1:
+        if(opcio in opcions_menu):
+            if opcio == 9:
                 continuar = False
             else:
                 opcions_menu[opcio]['funcio']()
+                pausar()
+        else:
+            #: si inserim debug() com a opcio de menu
+            if opcio == "debug()":
+                eval(opcio)
 
 
-"""
-crear_editar_tasca()
-crear_editar_tasca(1)
-crear_editar_tasca()
+def debug():
+    """Funcio que ens incorpora una petita shell per interactuar amb 
+    el programa, per exemple per debugar"""
+    import readline # optional, will allow Up/Down/History in the console
+    import code
+    vars = globals().copy()
+    vars.update(locals())
+    shell = code.InteractiveConsole(vars)
+    shell.interact()
 
-tasques[1].finalitzar()
-print "finalitzades:"
-mostrar_tasques_finalitzades()
-print "No finalitzades"
-mostrar_tasques_no_finalitzades()
-print "totes"
-mostrar_tasques()
-"""
 
-def main():
+if __name__ == "__main__":
     menu()
-
-
-
-main()
