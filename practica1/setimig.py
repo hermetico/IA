@@ -80,9 +80,9 @@ def main():
 
         if card:
             print "It is the card %s and costs %.1f" %(str(card), CARTAS[card])
-            suma_jugador += CARTAS[card] # Suamos los puntos de la carta tocada.
+            suma_jugador += CARTAS[card] # Sumamos los puntos de la carta tocada.
             
-            if suma_jugador > 7.5: # Si se pasa del limite, el usuario pierdey acaba el juego.
+            if suma_jugador > 7.5: # Si se pasa del limite, el usuario pierde y acaba el juego.
                 print GAME_OVER
                 return
                 
