@@ -8,7 +8,7 @@
     No te en compte signes de puntuacio, les lletres amb accent
     son evaluades com sense accent i la 'ñ' o 'ç' son evaluades
     com 'n' o 'c' respectivament
-    
+   
     :creado por Juan Marín y Dennis Quitaquís
 """
 from unicodedata import normalize
