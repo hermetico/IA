@@ -55,7 +55,7 @@ RESULTADOS = [
     [3, 1, 3, 1, 2]
 ]
     
-#: stadisticas del jugador a lo largo de las partidas
+#: estadisticas del jugador a lo largo de las partidas
 estadisticas_jugador = {
     'win'     : 0,
     'lose'    : 0

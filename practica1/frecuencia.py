@@ -3,7 +3,7 @@
     frecuencia
     ~~~~~~
     
-    Programa que llegeix un fitxer de text i comta la frecuencia
+    Programa que llegeix un fitxer de text i compta la frequencia
     de les lletres
     No te en compte signes de puntuacio, les lletres amb accent
     son evaluades com sense accent i la 'ñ' o 'ç' son evaluades
@@ -22,7 +22,7 @@ ACEPTADOS = [ chr(x) for x in range(ord('a'), ord('z') + 1) ]
 results = {}
 
 #: solicitamos el archivo a abrir
-archivo = raw_input("Nombre del archivo") or "text.txt"
+archivo = raw_input("Nombre del archivo: ") or "text.txt"
 
 def main():
     """ Funcio principal del programa """
