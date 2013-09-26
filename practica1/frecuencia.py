@@ -35,7 +35,7 @@ def main():
             # Esto convierte letras tipo 'é' en 'e' o 'ç' en 'c'
             line = normalize('NFD', line).encode('ascii', 'ignore')
             #: separamos la linea en palabras, con esto nos deshacemos
-            # de llos espacios
+            # de los espacios
             line = line.split()
             for word in line:
                 # separamos la palabra en letras
