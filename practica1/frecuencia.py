@@ -25,7 +25,7 @@ results = {}
 archivo = raw_input("Nombre del archivo") or "text.txt"
 
 def main():
-    """ Funcio principal del programa """
+    """Funcio principal del programa"""
     # abrimos el archivo para trabajar con el
     with open(archivo, 'r') as f:
         for line in f:
