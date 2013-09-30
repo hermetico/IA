@@ -91,11 +91,9 @@ def depthFirstSearch(problem):
     """
     "*** YOUR CODE HERE ***"
 
-    from game import Directions as Dir
     from util import Stack
     import Node as N
 
-    movements = {'North': Dir.NORTH,'South': Dir.SOUTH, 'East': Dir.EAST, 'West': Dir.WEST}
     visited = []
 
     inicial = problem.getStartState()
@@ -119,9 +117,10 @@ def depthFirstSearch(problem):
         result.append(previo.action)
         previo = previo.prev
 
+    print  result[::-1]
+
     return result[::-1]
     
-
 def breadthFirstSearch(problem):
     """
     Search the shallowest nodes in the search tree first.
