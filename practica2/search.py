@@ -90,10 +90,37 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-    print "Start:", problem.getStartState()
-    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    print "Start's successors:", problem.getSuccessors(problem.getStartState())
-    util.raiseNotDefined()
+
+    from game import Directions as Dir
+    from util import Stack
+    import Node as N
+
+    movements = {'North': Dir.NORTH,'South': Dir.SOUTH, 'East': Dir.EAST, 'West': Dir.WEST}
+    visited = []
+
+    inicial = problem.getStartState()
+    node = N.Node(str(inicial), inicial, None, None)
+    s = Stack()
+    s.push(node)
+
+    while not problem.isGoalState(node.data):
+        for ch in problem.getSuccessors(node.data):
+            if ch[0] not in visited:
+                p = N.Node(str(ch[0]),ch[0], node, ch[1])
+                s.push(p)
+
+        visited.append(node.data)
+        node = s.pop()
+
+    result = [node.action]
+    previo = node.prev
+
+    while previo.action:
+        result.append(previo.action)
+        previo = previo.prev
+
+    return result[::-1]
+    
 
 def breadthFirstSearch(problem):
     """
