@@ -91,19 +91,37 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-    print "Start:", problem.getStartState()
-    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    print "Start's successors:", problem.getSuccessors(problem.getStartState())
 
-    import readline # optional, will allow Up/Down/History in the console
-    import code
-    vars = globals().copy()
-    vars.update(locals())
-    shell = code.InteractiveConsole(vars)
-    shell.interact()
+    from util import Stack
+    import Node as N
 
-    util.raiseNotDefined()
+    visited = []
 
+    inicial = problem.getStartState()
+    node = N.Node(str(inicial), inicial, None, None)
+    s = Stack()
+    s.push(node)
+
+    while not problem.isGoalState(node.data):
+        for ch in problem.getSuccessors(node.data):
+            if ch[0] not in visited:
+                p = N.Node(str(ch[0]),ch[0], node, ch[1])
+                s.push(p)
+
+        visited.append(node.data)
+        node = s.pop()
+
+    result = [node.action]
+    previo = node.prev
+
+    while previo.action:
+        result.append(previo.action)
+        previo = previo.prev
+
+    print  result[::-1]
+
+    return result[::-1]
+    
 def breadthFirstSearch(problem):
     """
     Search the shallowest nodes in the search tree first.
