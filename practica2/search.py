@@ -86,6 +86,7 @@ def depthFirstSearch(problem):
 
 
     print "Start:", problem.getStartState()
+
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
@@ -93,6 +94,14 @@ def depthFirstSearch(problem):
     print "Start:", problem.getStartState()
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
+
+    import readline # optional, will allow Up/Down/History in the console
+    import code
+    vars = globals().copy()
+    vars.update(locals())
+    shell = code.InteractiveConsole(vars)
+    shell.interact()
+
     util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
