@@ -111,7 +111,7 @@ def depthFirstSearch(problem):
     while not problem.isGoalState(node.data):
         for ch in problem.getSuccessors(node.data):
             if ch[0] not in visited:
-                p = N.Node(str(ch[0]),ch[0], node, ch[1])
+                p = Node(str(ch[0]),ch[0], node, ch[1])
                 s.push(p)
 
         visited.append(node.data)
@@ -145,7 +145,7 @@ def breadthFirstSearch(problem):
     while not problem.isGoalState(node.data):
         for ch in problem.getSuccessors(node.data):
             if ch[0] not in visited:
-                p = N.Node(str(ch[0]),ch[0], node, ch[1])
+                p = Node(str(ch[0]),ch[0], node, ch[1])
                 s.push(p)
 
         visited.append(node.data)
