@@ -285,16 +285,26 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
+        #: movimiento cuesta 1
+        self.costFn = 1
+        import readline # optional, will allow Up/Down/History in the console
+        import code
+        vars = globals().copy()
+        vars.update(locals())
+        #shell = code.InteractiveConsole(vars)
+        #shell.interact()
 
     def getStartState(self):
         "Returns the start state (in your state space, not the full Pacman state space)"
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return self.startingPosition
+        #util.raiseNotDefined()
 
     def isGoalState(self, state):
         "Returns whether this search state is a goal state of the problem"
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return state in self.corners
+        #util.raiseNotDefined()
 
     def getSuccessors(self, state):
         """
@@ -318,6 +328,13 @@ class CornersProblem(search.SearchProblem):
             #   hitsWall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"
+            x,y = state
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+            if not self.walls[nextx][nexty]:
+                nextState = (nextx, nexty)
+                cost = self.costFn
+                successors.append( ( nextState, action, cost) )
 
         self._expanded += 1
         return successors

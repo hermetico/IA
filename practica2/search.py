@@ -20,6 +20,13 @@ by Pacman agents (in searchAgents.py).
 
 import util
 
+class Node:
+    def __init__(self, iden, data, prev, action):
+        self.id = iden
+        self.data = data
+        self.prev = prev
+        self.action = action
+
 class SearchProblem:
     """
     This class outlines the structure of a search problem, but doesn't implement
@@ -93,12 +100,11 @@ def depthFirstSearch(problem):
     "*** YOUR CODE HERE ***"
 
     from util import Stack
-    import Node as N
 
     visited = []
 
     inicial = problem.getStartState()
-    node = N.Node(str(inicial), inicial, None, None)
+    node = Node(str(inicial), inicial, None, None)
     s = Stack()
     s.push(node)
 
@@ -127,7 +133,34 @@ def breadthFirstSearch(problem):
     Search the shallowest nodes in the search tree first.
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    from util import Queue
+
+    visited = []
+
+    inicial = problem.getStartState()
+    node = Node(str(inicial), inicial, None, None)
+    s = Queue()
+    s.push(node)
+
+    while not problem.isGoalState(node.data):
+        for ch in problem.getSuccessors(node.data):
+            if ch[0] not in visited:
+                p = N.Node(str(ch[0]),ch[0], node, ch[1])
+                s.push(p)
+
+        visited.append(node.data)
+        node = s.pop()
+
+    result = [node.action]
+    previo = node.prev
+
+    while previo.action:
+        result.append(previo.action)
+        previo = previo.prev
+
+    print  result[::-1]
+
+    return result[::-1]
 
 def uniformCostSearch(problem):
     "Search the node of least total cost first. "
