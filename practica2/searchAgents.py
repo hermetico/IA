@@ -278,7 +278,8 @@ class CornersProblem(search.SearchProblem):
         self.startingPosition = startingGameState.getPacmanPosition()
         top, right = self.walls.height-2, self.walls.width-2
         self.corners = ((1,1), (1,top), (right, 1), (right, top))
-        self.objetivos = list(self.corners)
+        # Lista de objetivos a conseguir
+        self.objetivos = list(self.corners) 
         for corner in self.corners:
             if not startingGameState.hasFood(*corner):
                 print 'Warning: no food in corner ' + str(corner)
@@ -298,6 +299,8 @@ class CornersProblem(search.SearchProblem):
     def getStartState(self):
         "Returns the start state (in your state space, not the full Pacman state space)"
         "*** YOUR CODE HERE ***"
+        #Retorna una lista con una posicion ingial y una lista vacia
+        #que representa los objetivos cumplidos, inicialmente vacia.
         return [self.startingPosition, []]
         #util.raiseNotDefined()
 
@@ -318,7 +321,7 @@ class CornersProblem(search.SearchProblem):
          required to get there, and 'stepCost' is the incremental
          cost of expanding to that successor
         """
-
+        print "successor", state
         successors = []
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
@@ -329,16 +332,17 @@ class CornersProblem(search.SearchProblem):
             #   hitsWall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"
-            x,y = state
+            x,y = state[0]
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
             if not self.walls[nextx][nexty]:
                 nextState = (nextx, nexty)
-                if state[0] in self.corners && not state[0] in state[1]:
+                if (state[0] in self.objetivos) and (not state[0] in state[1]):
                     state[1].append(state[0])
                 cost = self.costFn
-                successors.append( ( nextState, state[1], action, cost) )
+                successors.append( ( [nextState, state[1]], action, cost) )
 
+        print successors
         self._expanded += 1
         return successors
 
