@@ -170,6 +170,16 @@ def breadthFirstSearch(problem):
     while not frontier.isEmpty():
         #: siguiente nodo a expandir
         node = frontier.pop()
+        #print "\nNodo actual: ", node.state
+        #print "\nCola: ", frontier.imprime()
+        #print "\nVisitados: ", visited
+
+        #while (raw_input(">>> ") != ""):
+        #    pass
+
+        if node.state in visited:
+            continue
+
         # comprobamos si el estado actual nos cumple el objetivo
         if problem.isGoalState(node.state):
             # si lo cumple, salimos del bucle
