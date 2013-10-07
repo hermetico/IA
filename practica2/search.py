@@ -21,11 +21,22 @@ by Pacman agents (in searchAgents.py).
 import util
 
 class Node:
-    def __init__(self, iden, data, prev, action):
-        self.id = iden
-        self.data = data
-        self.prev = prev
+    """
+    Clase que encapsula una codificaciion de estado y sus atributos
+    estado = Representacion del estado contenido
+    previous = Nodo previo
+    action = Accion para llegar a este estado
+    """
+    def __init__(self, state, previous=None, action=None, cost=0):
+        #: codificacion del estado
+        self.state = state
+        #: nodo padre
+        self.previous = previous
+        #: accion que ha llevado hasta este estado
         self.action = action
+        #: coste de llegar al estado
+        self.cost = cost
+
 
 class SearchProblem:
     """
@@ -100,67 +111,93 @@ def depthFirstSearch(problem):
     "*** YOUR CODE HERE ***"
 
     from util import Stack
-
+    #: lista de nodos visitados
     visited = []
+    #: pila que hace la funcion de frontera
+    frontier = Stack()
+    # Recogemos el primer estado, creamos un nodo y lo 
+    # insertamos en la pila
+    frontier.push(Node(problem.getStartState()))
+    # iteramos hasta que no hayan nodos en la pila
+    # o hayamos encontrado el objetivo
+    while not frontier.isEmpty():
+        #: siguiente nodo a expandir
+        node = frontier.pop()
+        # comprobamos si el estado actual nos cumple el objetivo
+        if problem.isGoalState(node.state):
+            # si lo cumple, salimos del bucle
+            break
+        # recuperamos los estados sucesores
+        for successor in problem.getSuccessors(node.state):
+            # si el estado sucesor no esta en la frontera, lo encapsulamos
+            # y lo itroducimos
+            if successor[0] not in visited:
+                frontier.push(Node(
+                                successor[0],
+                                node,
+                                successor[1],
+                                successor[2]))
 
-    inicial = problem.getStartState()
-    node = Node(str(inicial), inicial, None, None)
-    s = Stack()
-    s.push(node)
+        # insertamos el estado en la lista de visitados
+        visited.append(node.state)
 
-    while not problem.isGoalState(node.data):
-        for ch in problem.getSuccessors(node.data):
-            if ch[0] not in visited:
-                p = Node(str(ch[0]),ch[0], node, ch[1])
-                s.push(p)
+    #: acciones para llegar al objetivo
+    actions = []
+    # recorremos mientras haya un action en el nodo previo
+    while node.action:
+        actions.append(node.action)
+        node = node.previous
+    #mostramos el resultado antes de devolverlo
+    #print  actions[::-1]
+    return actions[::-1]
 
-        visited.append(node.data)
-        node = s.pop()
 
-    result = [node.action]
-    previo = node.prev
-
-    while previo.action:
-        result.append(previo.action)
-        previo = previo.prev
-
-    print  result[::-1]
-
-    return result[::-1]
-    
 def breadthFirstSearch(problem):
     """
     Search the shallowest nodes in the search tree first.
     """
     "*** YOUR CODE HERE ***"
     from util import Queue
-
+    #: lista de nodos visitados
     visited = []
+    #: pila que hace la funcion de frontera
+    frontier = Queue()
+    # Recogemos el primer estado, creamos un nodo y lo 
+    # insertamos en la pila
+    frontier.push(Node(problem.getStartState()))
+    # iteramos hasta que no hayan nodos en la pila
+    # o hayamos encontrado el objetivo
+    while not frontier.isEmpty():
+        #: siguiente nodo a expandir
+        node = frontier.pop()
+        # comprobamos si el estado actual nos cumple el objetivo
+        if problem.isGoalState(node.state):
+            # si lo cumple, salimos del bucle
+            break
+        # recuperamos los estados sucesores
+        for successor in problem.getSuccessors(node.state):
+            # si el estado sucesor no esta en la frontera, lo encapsulamos
+            # y lo itroducimos
+            if successor[0] not in visited:
+                frontier.push(Node(
+                                successor[0],
+                                node,
+                                successor[1],
+                                successor[2]))
 
-    inicial = problem.getStartState()
-    node = Node(str(inicial), inicial, None, None)
-    s = Queue()
-    s.push(node)
+        # insertamos el estado en la lista de visitados
+        visited.append(node.state)
 
-    while not problem.isGoalState(node.data):
-        for ch in problem.getSuccessors(node.data):
-            if ch[0] not in visited:
-                p = Node(str(ch[0]),ch[0], node, ch[1])
-                s.push(p)
+    #: acciones para llegar al objetivo
+    actions = []
+    # recorremos mientras haya un action en el nodo previo
+    while node.action:
+        actions.append(node.action)
+        node = node.previous
+    #mostramos el resultado antes de devolverlo
+    #print  actions[::-1]
+    return actions[::-1]
 
-        visited.append(node.data)
-        node = s.pop()
-
-    result = [node.action]
-    previo = node.prev
-
-    while previo.action:
-        result.append(previo.action)
-        previo = previo.prev
-
-    print  result[::-1]
-
-    return result[::-1]
 
 def uniformCostSearch(problem):
     "Search the node of least total cost first. "
