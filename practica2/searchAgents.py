@@ -279,7 +279,6 @@ class CornersProblem(search.SearchProblem):
         top, right = self.walls.height-2, self.walls.width-2
         self.corners = ((1,1), (1,top), (right, 1), (right, top))
         # Lista de objetivos a conseguir
-        self.objetivos = list(self.corners) 
         for corner in self.corners:
             if not startingGameState.hasFood(*corner):
                 print 'Warning: no food in corner ' + str(corner)
@@ -287,6 +286,8 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
+        #self.objetivos = [self.corners[1],self.corners[3]]
+        self.objetivos = list(self.corners)
         #: movimiento cuesta 1
         self.costFn = 1
         import readline # optional, will allow Up/Down/History in the console
@@ -299,16 +300,35 @@ class CornersProblem(search.SearchProblem):
     def getStartState(self):
         "Returns the start state (in your state space, not the full Pacman state space)"
         "*** YOUR CODE HERE ***"
-        #Retorna una lista con una posicion ingial y una lista vacia
+        #Retorna una lista con una posicion ingial y una tupla vacia
         #que representa los objetivos cumplidos, inicialmente vacia.
-        return [self.startingPosition, []]
+        return [self.startingPosition, [] ]
         #util.raiseNotDefined()
 
     def isGoalState(self, state):
         "Returns whether this search state is a goal state of the problem"
         "*** YOUR CODE HERE ***"
-        return self.objetivos == [x for x in self.objetivos if x in state[1]]
-        #util.raiseNotDefined()
+        # comprobamos que sea un estado que no esta dentro de
+        # los objetivos cumplidos que arrastramos
+        if state[0] not in state[1]:
+            # comprobamos si el estado esta dentro de los objetivos
+            if state[0] in self.objetivos:
+                # juntamos el objetivo actual con los que arrastramos
+                print "estados acarreados"
+                print state[1]
+                print "expandidos",self._expanded
+                print "estado actual"
+                print state[0]
+                #print
+                new_state = state[1][::]
+                new_state.append(state[0])
+                #print "nuevo estado"
+                #print new_state
+                # devolvemos si el estado actual mas los objetivos que arrastramos
+                # cumplen el objetivo completo
+                #return self.objetivos == [ x for x in self.objetivos if x in new_state]
+                # ahora es suficiente con comprobar la longitud de ambas listas
+                return len(new_state) == len(self.objetivos)
 
     def getSuccessors(self, state):
         """
@@ -321,7 +341,7 @@ class CornersProblem(search.SearchProblem):
          required to get there, and 'stepCost' is the incremental
          cost of expanding to that successor
         """
-        print "successor", state
+        #print "successor", state
         successors = []
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
@@ -337,10 +357,14 @@ class CornersProblem(search.SearchProblem):
             nextx, nexty = int(x + dx), int(y + dy)
             if not self.walls[nextx][nexty]:
                 nextState = (nextx, nexty)
-                if (state[0] in self.objetivos) and (not state[0] in state[1]):
-                    state[1].append(state[0])
+                # comprobamos si el estado esta dentro de los objetivos
+                # y ademas que no lo hayamos incluido ya en los objetivos
+                # que arrastramos
+                objetivos_cumplidos = state[1][::]
+                if (state[0] in self.objetivos) and ( state[0] not in state[1] ):
+                    objetivos_cumplidos.append(state[0])
                 cost = self.costFn
-                successors.append( ( [nextState, state[1]], action, cost) )
+                successors.append( ( [nextState, objetivos_cumplidos], action, cost ) )
 
         print successors
         self._expanded += 1
