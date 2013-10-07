@@ -278,6 +278,8 @@ class CornersProblem(search.SearchProblem):
         self.startingPosition = startingGameState.getPacmanPosition()
         top, right = self.walls.height-2, self.walls.width-2
         self.corners = ((1,1), (1,top), (right, 1), (right, top))
+        # Lista de objetivos a conseguir
+        self.objetivos = list(self.corners) 
         for corner in self.corners:
             if not startingGameState.hasFood(*corner):
                 print 'Warning: no food in corner ' + str(corner)
@@ -285,13 +287,8 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
-        # Definiremos una tercera dimension, la cual nos ira cuantos partes 
-        # del objetivo hemos cumplido
-        #: nuetros objetivos, en la tercera dimension pondremos un 1
-        self.objectives = [ x + (1,) for x in self.corners]
-        #: estados por explorar (dato que referencia la tercera dimension)
-        self.estados = len(self.objectives)
-
+        #: movimiento cuesta 1
+        self.costFn = 1
         import readline # optional, will allow Up/Down/History in the console
         import code
         vars = globals().copy()
@@ -302,18 +299,15 @@ class CornersProblem(search.SearchProblem):
     def getStartState(self):
         "Returns the start state (in your state space, not the full Pacman state space)"
         "*** YOUR CODE HERE ***"
-        return self.startingPosition
+        #Retorna una lista con una posicion ingial y una lista vacia
+        #que representa los objetivos cumplidos, inicialmente vacia.
+        return [self.startingPosition, []]
         #util.raiseNotDefined()
 
     def isGoalState(self, state):
         "Returns whether this search state is a goal state of the problem"
         "*** YOUR CODE HERE ***"
-        
-        # si es uno de los objetivos
-        if state + (self.states,)  in self.objectives:
-            self.objectives.remove(state)
-        #if self.objectives
-        return state in self.corners
+        return self.objetivos == [x for x in self.objetivos if x in state[1]]
         #util.raiseNotDefined()
 
     def getSuccessors(self, state):
@@ -327,7 +321,7 @@ class CornersProblem(search.SearchProblem):
          required to get there, and 'stepCost' is the incremental
          cost of expanding to that successor
         """
-
+        print "successor", state
         successors = []
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
@@ -338,14 +332,17 @@ class CornersProblem(search.SearchProblem):
             #   hitsWall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"
-            x,y = state
+            x,y = state[0]
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
             if not self.walls[nextx][nexty]:
                 nextState = (nextx, nexty)
+                if (state[0] in self.objetivos) and (not state[0] in state[1]):
+                    state[1].append(state[0])
                 cost = self.costFn
-                successors.append( ( nextState, action, cost) )
+                successors.append( ( [nextState, state[1]], action, cost) )
 
+        print successors
         self._expanded += 1
         return successors
 
