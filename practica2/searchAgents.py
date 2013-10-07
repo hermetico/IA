@@ -285,8 +285,13 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
-        #: movimiento cuesta 1
-        self.costFn = 1
+        # Definiremos una tercera dimension, la cual nos ira cuantos partes 
+        # del objetivo hemos cumplido
+        #: nuetros objetivos, en la tercera dimension pondremos un 1
+        self.objectives = [ x + (1,) for x in self.corners]
+        #: estados por explorar (dato que referencia la tercera dimension)
+        self.estados = len(self.objectives)
+
         import readline # optional, will allow Up/Down/History in the console
         import code
         vars = globals().copy()
@@ -303,6 +308,11 @@ class CornersProblem(search.SearchProblem):
     def isGoalState(self, state):
         "Returns whether this search state is a goal state of the problem"
         "*** YOUR CODE HERE ***"
+        
+        # si es uno de los objetivos
+        if state + (self.states,)  in self.objectives:
+            self.objectives.remove(state)
+        #if self.objectives
         return state in self.corners
         #util.raiseNotDefined()
 
