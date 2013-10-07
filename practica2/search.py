@@ -187,6 +187,7 @@ def breadthFirstSearch(problem):
 
         # insertamos el estado en la lista de visitados
         visited.append(node.state)
+        #print frontier
 
     #: acciones para llegar al objetivo
     actions = []

@@ -286,8 +286,8 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
-        #self.objetivos = [self.corners[1],self.corners[3]]
-        self.objetivos = list(self.corners)
+        self.objetivos = [self.corners[1],self.corners[3]]
+        #self.objetivos = list(self.corners)
         #: movimiento cuesta 1
         self.costFn = 1
         import readline # optional, will allow Up/Down/History in the console
@@ -343,6 +343,7 @@ class CornersProblem(search.SearchProblem):
         """
         #print "successor", state
         successors = []
+        print "estado = ",state[0]
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
             # Here's a code snippet for figuring out whether a new position hits a wall:
