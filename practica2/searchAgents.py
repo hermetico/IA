@@ -286,8 +286,8 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
-        self.objetivos = [self.corners[1],self.corners[3]]
-        #self.objetivos = list(self.corners)
+        #self.objetivos = [self.corners[1],self.corners[3]]
+        self.objetivos = list(self.corners)
         #: movimiento cuesta 1
         self.costFn = 1
         import readline # optional, will allow Up/Down/History in the console
@@ -296,6 +296,18 @@ class CornersProblem(search.SearchProblem):
         vars.update(locals())
         #shell = code.InteractiveConsole(vars)
         #shell.interact()
+        
+        self.ways = {}
+        self.ways[1] = 0
+        self.ways_counter = 1
+        self.exp = len(self.objetivos)
+        counter = 1
+        
+        for n in range(1, self.exp):
+            counter *= self.exp
+            self.ways[counter] = n
+
+        self.active_ways = list(self.corners)
 
     def getStartState(self):
         "Returns the start state (in your state space, not the full Pacman state space)"
@@ -308,17 +320,21 @@ class CornersProblem(search.SearchProblem):
     def isGoalState(self, state):
         "Returns whether this search state is a goal state of the problem"
         "*** YOUR CODE HERE ***"
-        # comprobamos que sea un estado que no esta dentro de
-        # los objetivos cumplidos que arrastramos
-        if state[0] not in state[1]:
-            # comprobamos si el estado esta dentro de los objetivos
-            if state[0] in self.objetivos:
+        # comprobamos que sea uno de los posibles objetivos
+        if state[0] in self.objetivos:
+            # comprobamos que no este dentro de los objetivos que acarreamos
+            if state[0] not in state[1]:
+                if state[0] in self.active_ways:
+                    self.active_ways.remove(state[0])
+                    if not self.active_ways:
+                        self.ways_counter *= self.exp
+                        self.active_ways = list(self.corners)
                 # juntamos el objetivo actual con los que arrastramos
-                print "estados acarreados"
-                print state[1]
-                print "expandidos",self._expanded
-                print "estado actual"
-                print state[0]
+                #print "estados acarreados"
+                #print state[1]
+                #print "expandidos",self._expanded
+                #print "estado actual"
+                #print state[0]
                 #print
                 new_state = state[1][::]
                 new_state.append(state[0])
@@ -343,7 +359,10 @@ class CornersProblem(search.SearchProblem):
         """
         #print "successor", state
         successors = []
-        print "estado = ",state[0]
+        #print "estado = ",state[0]
+        self._expanded +=1
+        if len(state[1]) < self.ways[self.ways_counter]:
+            return successors
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
             # Here's a code snippet for figuring out whether a new position hits a wall:
@@ -367,8 +386,6 @@ class CornersProblem(search.SearchProblem):
                 cost = self.costFn
                 successors.append( ( [nextState, objetivos_cumplidos], action, cost ) )
 
-        print successors
-        self._expanded += 1
         return successors
 
     def getCostOfActions(self, actions):
