@@ -176,7 +176,8 @@ def breadthFirstSearch(problem):
 
         #while (raw_input(">>> ") != ""):
         #    pass
-
+        # comprobamos que no hayamos metido el nodo varias veces
+        # antes de ser expandido
         if node.state in visited:
             continue
 
