@@ -297,16 +297,23 @@ class CornersProblem(search.SearchProblem):
         #shell = code.InteractiveConsole(vars)
         #shell.interact()
         
-        self.ways = {}
-        self.ways[1] = 0
-        self.ways_counter = 1
-        self.exp = len(self.objetivos)
-        counter = 1
+ #       self.ways = {}
+ #       self.ways[1] = 0
+ #       self.ways_counter = 1
+ #       self.exp = len(self.objetivos)
         
-        for n in range(1, self.exp):
-            counter *= self.exp
-            self.ways[counter] = n
+        counter = 1
+        self.bloques = []
+        self.carry_needed = [ x for x in range(len(self.objetivos)-1) ]
+        self.carry_level = 0
+        for i in range(len(self.objetivos), 1, -1):
+            counter *=i
+            self.bloques.append({'need':counter, 'have':0})
 
+        #for n in range(1, self.exp):
+        #    counter *= self.exp
+        #    self.ways[counter] = n
+        #print self.bloques
         self.active_ways = list(self.corners)
 
     def getStartState(self):
@@ -320,15 +327,28 @@ class CornersProblem(search.SearchProblem):
     def isGoalState(self, state):
         "Returns whether this search state is a goal state of the problem"
         "*** YOUR CODE HERE ***"
-        # comprobamos que sea uno de los posibles objetivos
+        # comprobamos que sea uno de los posibles subobjetivos
         if state[0] in self.objetivos:
-            # comprobamos que no este dentro de los objetivos que acarreamos
+            # comprobamos que no este dentro de los subobjetivos que acarreamos
             if state[0] not in state[1]:
-                if state[0] in self.active_ways:
-                    self.active_ways.remove(state[0])
-                    if not self.active_ways:
-                        self.ways_counter *= self.exp
-                        self.active_ways = list(self.corners)
+                # sumamos 1 al bloque en funcion del numero de subobjetivos
+                new_state = state[1][::]
+                new_state.append(state[0])
+                if len(new_state) == len(self.objetivos):
+                    return True
+                else:
+                    self.bloques[len(state[1])]['have'] += 1
+                    #comprobamos si hemos cerrado algun bloque
+                    for i in range(self.carry_level, len(self.bloques)):
+                        # si tengo el numero de vias que necesito para cerrar un bloque
+                        if self.bloques[i]['have'] == self.bloques[i]['need']:
+                            self.carry_level += 1
+                return False
+#                if state[0] in self.active_ways:
+#                    self.active_ways.remove(state[0])
+#                    if not self.active_ways:
+#                        self.ways_counter *= self.exp
+#                        self.active_ways = list(self.corners)
                 # juntamos el objetivo actual con los que arrastramos
                 #print "estados acarreados"
                 #print state[1]
@@ -336,15 +356,15 @@ class CornersProblem(search.SearchProblem):
                 #print "estado actual"
                 #print state[0]
                 #print
-                new_state = state[1][::]
-                new_state.append(state[0])
+                #new_state = state[1][::]
+                #new_state.append(state[0])
                 #print "nuevo estado"
                 #print new_state
                 # devolvemos si el estado actual mas los objetivos que arrastramos
                 # cumplen el objetivo completo
                 #return self.objetivos == [ x for x in self.objetivos if x in new_state]
                 # ahora es suficiente con comprobar la longitud de ambas listas
-                return len(new_state) == len(self.objetivos)
+                #return len(new_state) == len(self.objetivos)
 
     def getSuccessors(self, state):
         """
@@ -360,8 +380,9 @@ class CornersProblem(search.SearchProblem):
         #print "successor", state
         successors = []
         #print "estado = ",state[0]
+        # si tenemos caminos ya cerrados, no devolvemos sucesores
         self._expanded +=1
-        if len(state[1]) < self.ways[self.ways_counter]:
+        if len(state[1]) < self.carry_needed[self.carry_level]:
             return successors
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
