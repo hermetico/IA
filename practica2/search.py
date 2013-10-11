@@ -112,7 +112,7 @@ def depthFirstSearch(problem):
 
     from util import Stack
     #: lista de nodos visitados
-    visited = []
+    closed = []
     #: pila que hace la funcion de frontera
     frontier = Stack()
     # Recogemos el primer estado, creamos un nodo y lo 
@@ -127,19 +127,17 @@ def depthFirstSearch(problem):
         if problem.isGoalState(node.state):
             # si lo cumple, salimos del bucle
             break
-        # recuperamos los estados sucesores
-        for successor in problem.getSuccessors(node.state):
-            # si el estado sucesor no esta en la frontera, lo encapsulamos
-            # y lo itroducimos
-            if successor[0] not in visited:
+
+        if node.state not in closed:
+            # insertamos el estado en la lista de visitados
+            closed.append(node.state)
+            # recuperamos los estados sucesores
+            for successor in problem.getSuccessors(node.state):
                 frontier.push(Node(
                                 successor[0],
                                 node,
                                 successor[1],
-                                successor[2]))
-
-        # insertamos el estado en la lista de visitados
-        visited.append(node.state)
+                                    successor[2]))
 
     #: acciones para llegar al objetivo
     actions = []
@@ -159,7 +157,7 @@ def breadthFirstSearch(problem):
     "*** YOUR CODE HERE ***"
     from util import Queue
     #: lista de nodos visitados
-    visited = []
+    closed = []
     #: pila que hace la funcion de frontera
     frontier = Queue()
     # Recogemos el primer estado, creamos un nodo y lo 
@@ -176,28 +174,27 @@ def breadthFirstSearch(problem):
 
         #while (raw_input(">>> ") != ""):
         #    pass
-        # comprobamos que no hayamos metido el nodo varias veces
-        # antes de ser expandido
-        if node.state in visited:
-            continue
 
         # comprobamos si el estado actual nos cumple el objetivo
         if problem.isGoalState(node.state):
             # si lo cumple, salimos del bucle
             break
-        # recuperamos los estados sucesores
-        for successor in problem.getSuccessors(node.state):
-            # si el estado sucesor no esta en la frontera, lo encapsulamos
-            # y lo itroducimos
-            if successor[0] not in visited:
+
+        if node.state not in closed:
+            # insertamos el estado en la lista de visitados
+            closed.append(node.state)
+        
+            # recuperamos los estados sucesores
+            for successor in problem.getSuccessors(node.state):
+                # si el estado sucesor no esta en la frontera, lo encapsulamos
+                # y lo itroducimos
                 frontier.push(Node(
                                 successor[0],
                                 node,
                                 successor[1],
                                 successor[2]))
 
-        # insertamos el estado en la lista de visitados
-        visited.append(node.state)
+        
         #print frontier
 
     #: acciones para llegar al objetivo
