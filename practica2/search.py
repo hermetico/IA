@@ -149,7 +149,6 @@ def depthFirstSearch(problem):
     #print  actions[::-1]
     return actions[::-1]
 
-
 def breadthFirstSearch(problem):
     """
     Search the shallowest nodes in the search tree first.
@@ -207,7 +206,6 @@ def breadthFirstSearch(problem):
     #print  actions[::-1]
     return actions[::-1]
 
-
 def uniformCostSearch(problem):
     "Search the node of least total cost first. "
     "*** YOUR CODE HERE ***"
@@ -223,7 +221,45 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     "Search the node that has the lowest combined cost and heuristic first."
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    from util import PriorityQueue
+
+    closed = []
+    frontier = PriorityQueue()
+    
+    #: Coste desde el principio del mejor camino conocido
+    g = 0
+    #: Coste estimado total desde el principio hasta el ojetivo
+    f = g + heuristic(problem.getStartState(), problem)
+
+    frontier.push(Node(problem.getStartState()), f)
+
+
+    while not frontier.isEmpty():
+        node = frontier.pop()
+
+        if problem.isGoalState(node.state):
+            break
+
+        if node.state not in closed:
+
+            closed.append(node.state)
+
+            for successor in problem.getSuccessors(node.state):
+                g = node.cost + successor[2]
+                f = g + heuristic(successor[0], problem)
+
+                frontier.push(Node(successor[0],node, successor[1], g), f)
+
+    #: acciones para llegar al objetivo
+    actions = []
+    # recorremos mientras haya un action en el nodo previo
+    while node.action:
+        actions.append(node.action)
+        node = node.previous
+    #mostramos el resultado antes de devolverlo
+    #print  actions[::-1]
+    return actions[::-1]  
 
 
 # Abbreviations
