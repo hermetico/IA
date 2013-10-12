@@ -306,6 +306,9 @@ class CornersProblem(search.SearchProblem):
         self.bloques = []
         self.carry_needed = [ x for x in range(len(self.objetivos)-1) ]
         self.carry_level = 0
+        self.last_way_flag = False
+        self.ways_type = []
+        self.ramas_podadas = 0
         for i in range(len(self.objetivos), 1, -1):
             counter *=i
             self.bloques.append({'need':counter, 'have':0})
@@ -334,37 +337,25 @@ class CornersProblem(search.SearchProblem):
                 # sumamos 1 al bloque en funcion del numero de subobjetivos
                 new_state = state[1][::]
                 new_state.append(state[0])
+                # aqui estamos seguros de que como son diferentes los subobjetivos
+                # del carry, si mide igual que los objetivos, es el final de nuestra
+                # busqueda
                 if len(new_state) == len(self.objetivos):
+                    print "Ramas podadas = ", self.ramas_podadas
                     return True
-                else:
+                elif new_state not in self.ways_type:
                     self.bloques[len(state[1])]['have'] += 1
+                    self.ways_type.append(new_state)
                     #comprobamos si hemos cerrado algun bloque
                     for i in range(self.carry_level, len(self.bloques)):
                         # si tengo el numero de vias que necesito para cerrar un bloque
                         if self.bloques[i]['have'] == self.bloques[i]['need']:
+                            # aumentamos el nivel de carry necesitado para seguir
                             self.carry_level += 1
+                            # y activamos el flag del ultimo camino
+                            # para no eliminar el camino del nodo actual
+                            self.last_way_flag = True
                 return False
-#                if state[0] in self.active_ways:
-#                    self.active_ways.remove(state[0])
-#                    if not self.active_ways:
-#                        self.ways_counter *= self.exp
-#                        self.active_ways = list(self.corners)
-                # juntamos el objetivo actual con los que arrastramos
-                #print "estados acarreados"
-                #print state[1]
-                #print "expandidos",self._expanded
-                #print "estado actual"
-                #print state[0]
-                #print
-                #new_state = state[1][::]
-                #new_state.append(state[0])
-                #print "nuevo estado"
-                #print new_state
-                # devolvemos si el estado actual mas los objetivos que arrastramos
-                # cumplen el objetivo completo
-                #return self.objetivos == [ x for x in self.objetivos if x in new_state]
-                # ahora es suficiente con comprobar la longitud de ambas listas
-                #return len(new_state) == len(self.objetivos)
 
     def getSuccessors(self, state):
         """
@@ -377,13 +368,17 @@ class CornersProblem(search.SearchProblem):
          required to get there, and 'stepCost' is the incremental
          cost of expanding to that successor
         """
-        #print "successor", state
         successors = []
-        #print "estado = ",state[0]
         # si tenemos caminos ya cerrados, no devolvemos sucesores
         self._expanded +=1
         if len(state[1]) < self.carry_needed[self.carry_level]:
-            return successors
+            # pero primero comprobamos que no sea el ultimo nodo
+            # con el cual hemos cerrado el bloque
+            if self.last_way_flag:
+                self.last_way_flag = False
+            else:
+                self.ramas_podadas += 1
+                return successors
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
             # Here's a code snippet for figuring out whether a new position hits a wall:
@@ -406,7 +401,6 @@ class CornersProblem(search.SearchProblem):
                     objetivos_cumplidos.append(state[0])
                 cost = self.costFn
                 successors.append( ( [nextState, objetivos_cumplidos], action, cost ) )
-
         return successors
 
     def getCostOfActions(self, actions):
