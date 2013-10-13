@@ -290,10 +290,10 @@ class CornersProblem(search.SearchProblem):
         self.objetivos = list(self.corners)
         #: movimiento cuesta 1
         self.costFn = 1
-        import readline # optional, will allow Up/Down/History in the console
-        import code
-        vars = globals().copy()
-        vars.update(locals())
+        #import readline # optional, will allow Up/Down/History in the console
+        #import code
+        #vars = globals().copy()
+        #vars.update(locals())
         #shell = code.InteractiveConsole(vars)
         #shell.interact()
         
@@ -434,7 +434,27 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+    import readline # optional, will allow Up/Down/History in the console
+    import code
+    vars = globals().copy()
+    vars.update(locals())
+    #shell = code.InteractiveConsole(vars)
+    #shell.interact()
+    #: la posicion en la pantalla
+    position = state[0]
+    #: subobjetivos totales
+    subobjetivos = problem.objetivos
+    #: subobjetivos cumplidos
+    subobjetivos_cumplidos = state[1]
+    #: diferencia entre los subobjetivos y los subobjetivos cumplidos
+    subobjetivos_pendientes = [ x for x in problem.objetivos if x not in subobjetivos_cumplidos ]
+    # calculamos manhattan por cada subobjetivo_pendiente
+    #: acumulado
+    sub_manhattan = 0
+    for goal in subobjetivos_pendientes:
+        sub_manhattan += abs(position[0] - goal[0]) + abs(position[1] - goal[1])
+
+    return sub_manhattan
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
