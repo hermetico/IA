@@ -286,21 +286,9 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
-        #self.objetivos = [self.corners[1],self.corners[3]]
         self.objetivos = list(self.corners)
         #: movimiento cuesta 1
         self.costFn = 1
-        #import readline # optional, will allow Up/Down/History in the console
-        #import code
-        #vars = globals().copy()
-        #vars.update(locals())
-        #shell = code.InteractiveConsole(vars)
-        #shell.interact()
-        
- #       self.ways = {}
- #       self.ways[1] = 0
- #       self.ways_counter = 1
- #       self.exp = len(self.objetivos)
         
         counter = 1
         self.bloques = []
@@ -311,12 +299,8 @@ class CornersProblem(search.SearchProblem):
         self.ramas_podadas = 0
         for i in range(len(self.objetivos), 1, -1):
             counter *=i
-            self.bloques.append({'need':counter, 'have':0})
+            self.bloques.append({'need': counter, 'have': 0})
 
-        #for n in range(1, self.exp):
-        #    counter *= self.exp
-        #    self.ways[counter] = n
-        #print self.bloques
         self.active_ways = list(self.corners)
 
     def getStartState(self):
@@ -434,12 +418,6 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    import readline # optional, will allow Up/Down/History in the console
-    import code
-    vars = globals().copy()
-    vars.update(locals())
-    #shell = code.InteractiveConsole(vars)
-    #shell.interact()
     #: la posicion en la pantalla
     position = state[0]
     #: subobjetivos totales
@@ -449,12 +427,100 @@ def cornersHeuristic(state, problem):
     #: diferencia entre los subobjetivos y los subobjetivos cumplidos
     subobjetivos_pendientes = [ x for x in problem.objetivos if x not in subobjetivos_cumplidos ]
     # calculamos manhattan por cada subobjetivo_pendiente
+    # calculamos la euclidiana y hacemos la media de ambas
     #: acumulado
-    sub_manhattan = 0
-    for goal in subobjetivos_pendientes:
-        sub_manhattan += abs(position[0] - goal[0]) + abs(position[1] - goal[1])
+    h = 0
+    # buscamos la posicion  cercana
+    first = min( manhattan_list(position, subobjetivos_pendientes) )
+    h += first[0]
+    first = first[1]
+    # la eliminamos de la lista
+    subobjetivos_pendientes.remove(first)
+    # buscamos los elementos mas cercanos al mas alejado
+    while subobjetivos_pendientes:
+        first = min( manhattan_list(first,subobjetivos_pendientes) )
+        # sumamos la distancia
+        h += first[0]
+        # guardamos la posicion
+        first = first[1]
+        # eliminamos la posicion de la lista
+        subobjetivos_pendientes.remove(first)
+    
+    
+    return h
 
-    return sub_manhattan
+
+def manhattan(a,b):
+    "Funcio que retorna la distancia de manhattan entre dos punts"
+    return  abs(a[0] - b[0]) + abs(a[1] - b[1])
+
+
+def manhattan_list(a, lista):
+    """
+    retorna una llista amb les distancies de manhatatn entre
+    a y els elements de la llista.
+    Amb format (distancia,(element))
+    """
+    return [ (manhattan(a,b),b) for b in lista]
+
+
+def manhattanWalls(a,b,walls_list):
+    """
+    Funcion que devuelve un valor de muros que hay entre a y b
+    utilizando los caminos de manhattan
+    """
+    ponderacion_muro = 1
+    # primero contamos los numeros desde xA hasta xB
+    # con altura yA
+    walls = wallsBetween_x(a[0],b[0],a[1],walls_list)
+    #ahora lo mismo pero con yB
+    walls += wallsBetween_x(a[0],b[0],b[1],walls_list)
+    # el mismo calculo pero dejando estatico x en lugar de y
+    walls += wallsBetween_x(a[0],a[1],b[1],walls_list)
+    walls += wallsBetween_x(b[0],a[1],b[1],walls_list)
+    #devolvemos el numero de muros por la ponderacion
+    return walls * ponderacion_muro
+
+
+def wallsBetween_x(x1,x2,y,walls_list):
+    """
+    Funcion que devuelve el numero de muros entre (x1,y) y (x2,y)
+    en linea recta
+    """
+    signo = 1
+    num_walls = 0
+    #: valor que tomara el signo para desplazar el offset
+    if x1 > x2:
+        signo = -1
+    for x_offset in range(1,abs(x1 - x2)):
+        #: definimos el valor de x
+        x = x1 + (x_offset * signo)
+        place = (x,y)
+        # si el lugar forma parte de los muros
+        if place in walls_list:
+            num_walls += 1
+    return num_walls
+
+
+def wallsBetween_x(x,y1,y2,walls_list):
+    """
+    Funcion que devuelve el numero de muros entre (x,y1) y (x,y2)
+    en linea recta
+    """
+    signo = 1
+    num_walls = 0
+    #: valor que tomara el signo para desplazar el offset
+    if y1 > y2:
+        signo = -1
+    for y_offset in range(1,abs(y1 - y2)):
+        #: definimos el valor de x
+        y = y1 + (y_offset * signo)
+        place = (x,y)
+        # si el lugar forma parte de los muros
+        if place in walls_list:
+            num_walls += 1
+    return num_walls
+    
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
@@ -545,7 +611,36 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    return 0
+    subobjetivos_pendientes = foodGrid.asList()
+    h = 0
+    """
+    OBSOLETO
+    #: acumulado
+    h = len(subobjetivos_pendientes)
+    if position in subobjetivos_pendientes:
+        h -= 1
+    """
+    if not subobjetivos_pendientes:
+        return 0
+    first = min( manhattan_list(position, subobjetivos_pendientes) )
+    h += first[0]
+    first = first[1]
+    # la eliminamos de la lista
+    subobjetivos_pendientes.remove(first)
+    # buscamos los elementos mas cercanos al mas alejado
+    while subobjetivos_pendientes:
+        first = min( manhattan_list(first,subobjetivos_pendientes) )
+        # sumamos la distancia
+        #if first[0] > 1:
+        h += first[0]
+
+        # guardamos la posicion
+        first = first[1]
+        # eliminamos la posicion de la lista
+        subobjetivos_pendientes.remove(first)
+    
+    
+    return h
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"

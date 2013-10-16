@@ -246,6 +246,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
             closed.append(node.state)
 
             for successor in problem.getSuccessors(node.state):
+                #print successor
                 g = node.cost + successor[2]
                 f = g + heuristic(successor[0], problem)
 
