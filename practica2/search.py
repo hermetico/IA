@@ -145,8 +145,6 @@ def depthFirstSearch(problem):
     while node.action:
         actions.append(node.action)
         node = node.previous
-    #mostramos el resultado antes de devolverlo
-    #print  actions[::-1]
     return actions[::-1]
 
 def breadthFirstSearch(problem):
@@ -167,12 +165,6 @@ def breadthFirstSearch(problem):
     while not frontier.isEmpty():
         #: siguiente nodo a expandir
         node = frontier.pop()
-        #print "\nNodo actual: ", node.state
-        #print "\nCola: ", frontier.imprime()
-        #print "\nVisitados: ", visited
-
-        #while (raw_input(">>> ") != ""):
-        #    pass
 
         # comprobamos si el estado actual nos cumple el objetivo
         if problem.isGoalState(node.state):
@@ -193,17 +185,13 @@ def breadthFirstSearch(problem):
                                 successor[1],
                                 successor[2]))
 
-        
-        #print frontier
-
     #: acciones para llegar al objetivo
     actions = []
     # recorremos mientras haya un action en el nodo previo
     while node.action:
         actions.append(node.action)
         node = node.previous
-    #mostramos el resultado antes de devolverlo
-    #print  actions[::-1]
+        
     return actions[::-1]
 
 def uniformCostSearch(problem):
@@ -258,8 +246,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     while node.action:
         actions.append(node.action)
         node = node.previous
-    #mostramos el resultado antes de devolverlo
-    #print  actions[::-1]
+
     return actions[::-1]  
 
 

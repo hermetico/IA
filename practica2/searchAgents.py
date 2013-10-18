@@ -278,14 +278,18 @@ class CornersProblem(search.SearchProblem):
         self.startingPosition = startingGameState.getPacmanPosition()
         top, right = self.walls.height-2, self.walls.width-2
         self.corners = ((1,1), (1,top), (right, 1), (right, top))
+
         # Lista de objetivos a conseguir
         for corner in self.corners:
             if not startingGameState.hasFood(*corner):
                 print 'Warning: no food in corner ' + str(corner)
+
         self._expanded = 0 # Number of search nodes expanded
+
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
+
         self.objetivos = list(self.corners)
         #: movimiento cuesta 1
         self.costFn = 1
@@ -418,24 +422,33 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
+
     #: la posicion en la pantalla
     position = state[0]
+
     #: subobjetivos totales
     subobjetivos = problem.objetivos
+
     #: subobjetivos cumplidos
     subobjetivos_cumplidos = state[1]
+
     #: diferencia entre los subobjetivos y los subobjetivos cumplidos
-    subobjetivos_pendientes = [ x for x in problem.objetivos if x not in subobjetivos_cumplidos ]
-    # calculamos manhattan por cada subobjetivo_pendiente
-    # calculamos la euclidiana y hacemos la media de ambas
+    subobjetivos_pendientes = [x 
+                                    for x in problem.objetivos 
+                                        if x not in subobjetivos_cumplidos
+                                ]
+
     #: acumulado
     h = 0
+
     # buscamos la posicion  cercana
     first = min( manhattan_list(position, subobjetivos_pendientes) )
     h += first[0]
     first = first[1]
+
     # la eliminamos de la lista
     subobjetivos_pendientes.remove(first)
+    
     # buscamos los elementos mas cercanos al mas alejado
     while subobjetivos_pendientes:
         first = min( manhattan_list(first,subobjetivos_pendientes) )
@@ -445,7 +458,6 @@ def cornersHeuristic(state, problem):
         first = first[1]
         # eliminamos la posicion de la lista
         subobjetivos_pendientes.remove(first)
-    
     
     return h
 
@@ -611,15 +623,9 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
+
     subobjetivos_pendientes = foodGrid.asList()
     h = 0
-    """
-    OBSOLETO
-    #: acumulado
-    h = len(subobjetivos_pendientes)
-    if position in subobjetivos_pendientes:
-        h -= 1
-    """
     if not subobjetivos_pendientes:
         return 0
     first = min( manhattan_list(position, subobjetivos_pendientes) )
@@ -631,14 +637,11 @@ def foodHeuristic(state, problem):
     while subobjetivos_pendientes:
         first = min( manhattan_list(first,subobjetivos_pendientes) )
         # sumamos la distancia
-        #if first[0] > 1:
         h += first[0]
-
         # guardamos la posicion
         first = first[1]
         # eliminamos la posicion de la lista
         subobjetivos_pendientes.remove(first)
-    
     
     return h
 
