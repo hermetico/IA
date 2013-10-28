@@ -338,7 +338,7 @@ class CornersProblem(search.SearchProblem):
                             self.carry_level += 1
                             # y activamos el flag del ultimo camino
                             # para no eliminar el camino del nodo actual
-                            self.last_way_flag = True
+                            self.last_way_flag = False
                 return False
 
     def getSuccessors(self, state):
@@ -612,35 +612,64 @@ def foodHeuristic(state, problem):
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
     subobjetivos_pendientes = foodGrid.asList()
+    lista_subobjetivos = foodGrid.asList()
     h = 0
-    """
-    OBSOLETO
+    penalty = 2.2
+    stored_data = problem.heuristicInfo
+    stored_data['walls'] = {}
+    #OBSOLETO
     #: acumulado
-    h = len(subobjetivos_pendientes)
-    if position in subobjetivos_pendientes:
-        h -= 1
-    """
-    if not subobjetivos_pendientes:
-        return 0
-    first = min( manhattan_list(position, subobjetivos_pendientes) )
-    h += first[0]
-    first = first[1]
+    #h = len(subobjetivos_pendientes)
+    #if position in subobjetivos_pendientes:
+    #    h -= 1
+    
+    
+    #for sub in subobjetivos_pendientes:
+    #    adj = adjacentes(sub,subobjetivos_pendientes)
+    #    if adj % 2 == 1:
+    #        stored_data['adjacencias'][sub] = (1/adj) * penalty
+    
+    #ESTE FUNCIONA ALGO BIEN
+    #if not subobjetivos_pendientes:
+    #    print "sin subobjetivos"
+    #    return 0
+    #if first[0] > 1:
+    #print len(subobjetivos_pendientes)
     # la eliminamos de la lista
-    subobjetivos_pendientes.remove(first)
-    # buscamos los elementos mas cercanos al mas alejado
-    while subobjetivos_pendientes:
-        first = min( manhattan_list(first,subobjetivos_pendientes) )
-        # sumamos la distancia
-        #if first[0] > 1:
-        h += first[0]
-
-        # guardamos la posicion
+    # buscamos los elementos mas cercanos
+    if not stored_data['walls'].items() and lista_subobjetivos:
+        first = min( manhattan_list(position, subobjetivos_pendientes) )
+        subobjetivos_pendientes.remove(first[1])
+        stored_data['walls'][first[1]] = first[0]
         first = first[1]
-        # eliminamos la posicion de la lista
-        subobjetivos_pendientes.remove(first)
+        while subobjetivos_pendientes:
+            first = min( manhattan_list(first,subobjetivos_pendientes) )
+            subobjetivos_pendientes.remove(first[1])
+            adj = adjacentes(first[1],subobjetivos_pendientes)
+            if adj % 2 == 1:
+                stored_data['walls'][first[1]] = first[0] * penalty
+            else:
+                stored_data['walls'][first[1]] = first[0]
+            first = first[1]
+    if position in stored_data['walls']:
+        stored_data['walls'].remove(position)
+
+    for val in stored_data['walls'].values():
+        h += val
     
-    
+    print h
     return h
+
+
+def adjacentes(a, lista):
+    total = 1
+    x,y = a[0],a[1]
+    if (x+1, y) in lista: total += 1
+    if (x-1, y) in lista: total += 1
+    if (x, y+1) in lista: total += 1
+    if (x, y-1) in lista: total += 1
+    return total
+
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
