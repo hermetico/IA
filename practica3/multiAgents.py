@@ -61,14 +61,29 @@ class ReflexAgent(Agent):
 
     distMin = 100
     for posFant in newGhostStates:
-      d = manhattanDistance(newPos,posFant.getPosition())
-      distMin = min(distMin,d)
+      d = manhattanDistance(newPos, posFant.getPosition())
+      distMin = min(distMin, d)
 
     if (distMin < 2):
       val = -100
     else:
       val = distMin
     "*** YOUR CODE HERE ***"
+
+    ghost_num = 0
+    # comprobamos si los fantasmas estan en modo asustado
+    for posFant in newGhostStates:
+        d = manhattanDistance(newPos, posFant.getPosition())
+        # si estan en modo asustado durante mas pasos que la distancia a ellos
+        # sumamos un plus
+        if newScaredTimes[ghost_num] > d:
+            val += 100
+        ghost_num += 1
+
+    # tambien consideramos que si la accion es quedarse quieto
+    # solo devolvemos el score actual
+    if action == 'Stop':
+        return successorGameState.getScore()
     return successorGameState.getScore()+val
 
 def scoreEvaluationFunction(currentGameState):
