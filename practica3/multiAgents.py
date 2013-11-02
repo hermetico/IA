@@ -153,10 +153,10 @@ class MinimaxAgent(MultiAgentSearchAgent):
         self.pacman = 0
 
         #: infinito
-        self.infinity = float("inf")
+        self.oo = float("inf")
 
         #: permitimos 'Stop' action ?
-        self.enable_stop_action = True
+        self.enable_stop_action = False
 
         #actions = {}
         # la primera llamada la hemos de hacer aqui ya que devemos controlar el movimiento que vamos a hacer
@@ -180,8 +180,8 @@ class MinimaxAgent(MultiAgentSearchAgent):
         #: si estamos en un estado terminal
         if gameState.isWin() or gameState.isLose():
             return self.evaluationFunction(gameState)
-            #: infinito
-        v = self.infinity
+        #: infinito
+        v = self.oo
         # hay varios ghost, por ello, hemos de hacer un min detras de otro
         if ghost < (gameState.getNumAgents() - 1):
             return min([v] + [self.minValue(gameState.generateSuccessor(ghost, action), depth, ghost+1)
@@ -203,7 +203,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
             return self.evaluationFunction(gameState)
 
         #: menos infinito
-        v = -self.infinity
+        v = -self.oo
         return max([v] + [self.minValue(gameState.generateSuccessor(self.pacman, action), depth)
                           for action in gameState.getLegalActions(self.pacman)
                           if action is not 'Stop'
@@ -213,14 +213,100 @@ class MinimaxAgent(MultiAgentSearchAgent):
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """
     Your minimax agent with alpha-beta pruning (question 3)
-  """
+    """
 
     def getAction(self, gameState):
         """
-      Returns the minimax action using self.depth and self.evaluationFunction
-    """
+        Returns the minimax action using self.depth and self.evaluationFunction
+        """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        #: agente base
+        self.pacman = 0
+
+        #infinito
+        self.oo = float("inf")
+
+        #: aplha
+        alpha = -self.oo
+        #: beta
+        beta = self.oo
+
+        #: permitimos 'Stop' action ?
+        self.enable_stop_action = False
+
+        #actions = {}
+        # la primera llamada la hemos de hacer aqui ya que devemos controlar el movimiento que vamos a hacer
+        #for action in gameState.getLegalActions(self.pacman):
+        #    actions[action] = self.minValue(gameState.generateSuccessor(self.pacman, action), self.depth)
+        actions = {action: self.minValue(gameState.generateSuccessor(self.pacman, action), alpha, beta, self.depth)
+                   for action in gameState.getLegalActions(self.pacman)
+                   if action is not 'Stop'
+        or self.enable_stop_action}
+        #devolvemos la accion con maxima utilidad
+        return max(actions, key=actions.get)
+
+
+    def minValue(self, gameState, alpha, beta, depth, ghost=1):
+        """
+        Calcula los miminos, los acumula en funcion del numero de fantasmas.
+        En total hay x agentes y el pacman es el 0, asi que el primer ghost por defecto es 1
+        Mientras haya fantasmas vuelve a llamar a la funcion min, en el momento que ya se han calculado
+        los fantasmas, se llama a la funcion max
+        """
+        #: si estamos en un estado terminal
+        if gameState.isWin() or gameState.isLose():
+            return self.evaluationFunction(gameState)
+        #: infinito
+        v = self.oo
+        # hay varios ghost, por ello, hemos de hacer un min detras de otro
+        if ghost < (gameState.getNumAgents() - 1):
+            for action in gameState.getLegalActions(ghost):
+                # llamada recursiva
+                v = min(v, self.minValue(gameState.generateSuccessor(ghost, action), alpha, beta, depth,  ghost+1))
+                # si el valor es menor o igual alpha
+                if v <= alpha:
+                    return v
+                # sino, actualizamos beta y seguimos haciendo llamadas
+                beta = min(beta, v)
+            return v
+
+        # si es el ultimo ghost, hacemos el max
+        for action in gameState.getLegalActions(ghost):
+            # llamada recursiva
+            v = min(v, self.maxValue(gameState.generateSuccessor(ghost, action), alpha, beta, depth))
+            # si el valor es menor o igual alpha, podamos
+            if v <= alpha:
+                return v
+            # sino, actualizamos beta y seguimos haciendo llamadas
+            beta = min(beta, v)
+        return v
+
+
+    def maxValue(self, gameState, alpha, beta, depth):
+        """
+        Calcula los maximos, aqui es donde se decide ademas si hemos llegado a la profundidad solicitada
+        """
+        #: profundidad maxima es 0
+        depth -= 1
+        #: si estamos en un estado terminal
+        if gameState.isWin() or gameState.isLose() or depth == 0:
+            return self.evaluationFunction(gameState)
+
+        #: menos infinito
+        v = -self.oo
+        for action in gameState.getLegalActions(self.pacman):
+            # comprobamos si la accion es stop y si la tenemos habilitada
+            if action is not 'Stop' or self.enable_stop_action:
+                v = max(v, self.minValue(gameState.generateSuccessor(self.pacman, action), alpha, beta, depth))
+                # si el valor de v es mayor o igual que beta, podamos
+                if v >= beta:
+                    return v
+                alpha = max(alpha, v)
+        return v
+        #return max([v] + [self.minValue(gameState.generateSuccessor(self.pacman, action), depth)
+        #                  for action in gameState.getLegalActions(self.pacman)
+        #                  if action is not 'Stop'
+        #    or self.enable_stop_action])
 
 
 class ExpectimaxAgent(MultiAgentSearchAgent):
