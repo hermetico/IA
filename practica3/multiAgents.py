@@ -77,6 +77,8 @@ class ReflexAgent(Agent):
             d = manhattanDistance(newPos, posFant.getPosition())
             # si estan en modo asustado durante mas pasos que la distancia a ellos
             # sumamos un plus
+            if newScaredTimes[ghost_num] > 0:
+                val += 10
             if newScaredTimes[ghost_num] > d:
                 val += 100
             ghost_num += 1
@@ -178,17 +180,17 @@ class MinimaxAgent(MultiAgentSearchAgent):
         los fantasmas, se llama a la funcion max
         """
         #: si estamos en un estado terminal
-        if gameState.isWin() or gameState.isLose():
+        if gameState.isWin() or gameState.isLose() or depth == 0:
             return self.evaluationFunction(gameState)
         #: infinito
         v = self.oo
         # hay varios ghost, por ello, hemos de hacer un min detras de otro
         if ghost < (gameState.getNumAgents() - 1):
-            return min([v] + [self.minValue(gameState.generateSuccessor(ghost, action), depth, ghost+1)
+            return min([v] + [self.minValue(gameState.generateSuccessor(ghost, action), depth - 1, ghost + 1)
                               for action in gameState.getLegalActions(ghost)])
 
         # si es el ultimo ghost, hacemos el max
-        return min([v] + [self.maxValue(gameState.generateSuccessor(ghost, action), depth)
+        return min([v] + [self.maxValue(gameState.generateSuccessor(ghost, action), depth - 1)
                           for action in gameState.getLegalActions(ghost)])
 
 
@@ -196,15 +198,13 @@ class MinimaxAgent(MultiAgentSearchAgent):
         """
         Calcula los maximos, aqui es donde se decide ademas si hemos llegado a la profundidad solicitada
         """
-        #: profundidad maxima es 0
-        depth -= 1
         #: si estamos en un estado terminal
         if gameState.isWin() or gameState.isLose() or depth == 0:
             return self.evaluationFunction(gameState)
 
         #: menos infinito
         v = -self.oo
-        return max([v] + [self.minValue(gameState.generateSuccessor(self.pacman, action), depth)
+        return max([v] + [self.minValue(gameState.generateSuccessor(self.pacman, action), depth - 1)
                           for action in gameState.getLegalActions(self.pacman)
                           if action is not 'Stop'
                           or self.enable_stop_action])
@@ -254,7 +254,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         los fantasmas, se llama a la funcion max
         """
         #: si estamos en un estado terminal
-        if gameState.isWin() or gameState.isLose():
+        if gameState.isWin() or gameState.isLose() or depth == 0:
             return self.evaluationFunction(gameState)
         #: infinito
         v = self.oo
@@ -262,7 +262,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         if ghost < (gameState.getNumAgents() - 1):
             for action in gameState.getLegalActions(ghost):
                 # llamada recursiva
-                v = min(v, self.minValue(gameState.generateSuccessor(ghost, action), alpha, beta, depth,  ghost+1))
+                v = min(v, self.minValue(gameState.generateSuccessor(ghost, action), alpha, beta, depth - 1,  ghost+1))
                 # si el valor es menor o igual alpha
                 if v <= alpha:
                     return v
@@ -273,7 +273,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         # si es el ultimo ghost, hacemos el max
         for action in gameState.getLegalActions(ghost):
             # llamada recursiva
-            v = min(v, self.maxValue(gameState.generateSuccessor(ghost, action), alpha, beta, depth))
+            v = min(v, self.maxValue(gameState.generateSuccessor(ghost, action), alpha, beta, depth - 1))
             # si el valor es menor o igual alpha, podamos
             if v <= alpha:
                 return v
@@ -286,8 +286,6 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         """
         Calcula los maximos, aqui es donde se decide ademas si hemos llegado a la profundidad solicitada
         """
-        #: profundidad maxima es 0
-        depth -= 1
         #: si estamos en un estado terminal
         if gameState.isWin() or gameState.isLose() or depth == 0:
             return self.evaluationFunction(gameState)
@@ -297,33 +295,84 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         for action in gameState.getLegalActions(self.pacman):
             # comprobamos si la accion es stop y si la tenemos habilitada
             if action is not 'Stop' or self.enable_stop_action:
-                v = max(v, self.minValue(gameState.generateSuccessor(self.pacman, action), alpha, beta, depth))
+                v = max(v, self.minValue(gameState.generateSuccessor(self.pacman, action), alpha, beta, depth - 1))
                 # si el valor de v es mayor o igual que beta, podamos
                 if v >= beta:
                     return v
                 alpha = max(alpha, v)
         return v
-        #return max([v] + [self.minValue(gameState.generateSuccessor(self.pacman, action), depth)
-        #                  for action in gameState.getLegalActions(self.pacman)
-        #                  if action is not 'Stop'
-        #    or self.enable_stop_action])
 
 
 class ExpectimaxAgent(MultiAgentSearchAgent):
     """
     Your expectimax agent (question 4)
-  """
+    """
 
     def getAction(self, gameState):
         """
-      Returns the expectimax action using self.depth and self.evaluationFunction
-      
-      All ghosts should be modeled as choosing uniformly at random from their
-      legal moves.
-    """
+        Returns the expectimax action using self.depth and self.evaluationFunction
+        All ghosts should be modeled as choosing uniformly at random from their
+        legal moves.
+        """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        #: agente base
+        self.pacman = 0
 
+        #infinito
+        self.oo = float("inf")
+
+        #: permitimos 'Stop' action ?
+        self.enable_stop_action = False
+
+        actions = {action: self.expValue(gameState.generateSuccessor(self.pacman, action), self.depth)
+                   for action in gameState.getLegalActions(self.pacman)
+                   if action is not 'Stop'
+        or self.enable_stop_action}
+        #devolvemos la accion con maxima utilidad
+        return max(actions, key=actions.get)
+
+
+    def maxValue(self, gameState, depth):
+        """
+        Calcula los maximos, aqui es donde se decide ademas si hemos llegado a la profundidad solicitada
+        """
+        #: si estamos en un estado terminal
+        if gameState.isWin() or gameState.isLose() or depth == 0:
+            return self.evaluationFunction(gameState)
+
+        #: menos infinito
+        v = -self.oo
+        for action in gameState.getLegalActions(self.pacman):
+            # comprobamos si la accion es stop y si la tenemos habilitada
+            if action is not 'Stop' or self.enable_stop_action:
+                v = max(v, self.expValue(gameState.generateSuccessor(self.pacman, action), depth - 1))
+        return v
+
+
+    def expValue(self, gameState, depth, ghost=1):
+        """
+        Calcula la exp, los acumula en funcion del numero de fantasmas.
+        En total hay x agentes y el pacman es el 0, asi que el primer ghost por defecto es 1
+        Mientras haya fantasmas vuelve a llamar a la funcion min, en el momento que ya se han calculado
+        los fantasmas, se llama a la funcion max
+        """
+        #: si estamos en un estado terminal
+        if gameState.isWin() or gameState.isLose() or depth == 0:
+            return self.evaluationFunction(gameState)
+
+        # hay varios ghost, por ello, hemos de hacer un min detras de otro
+        chances = []
+        if ghost < (gameState.getNumAgents() - 1):
+            for action in gameState.getLegalActions(ghost):
+                # llamada recursiva
+                chances.append(self.expValue(gameState.generateSuccessor(ghost, action), depth - 1,  ghost+1))
+            return sum(chances) / len(chances)
+
+        # si es el ultimo ghost, hacemos el max
+        for action in gameState.getLegalActions(ghost):
+            # llamada recursiva
+            chances.append(self.maxValue(gameState.generateSuccessor(ghost, action), depth - 1))
+        return sum(chances) / len(chances)
 
 def betterEvaluationFunction(currentGameState):
     """
@@ -331,7 +380,7 @@ def betterEvaluationFunction(currentGameState):
     evaluation function (question 5).
     
     DESCRIPTION: <write something here so we know what you did>
-  """
+    """
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
 
