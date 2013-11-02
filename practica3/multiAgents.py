@@ -163,7 +163,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
         self.enable_stop_action = False
 
         actions = {}
-        # la primera llamada la hemos de hacer aqui ya que devemos controlar el movimiento que vamos a hacer
+        # la primera llamada la hemos de hacer aqui ya que debemos controlar el movimiento que vamos a hacer
         for action in gameState.getLegalActions(self.pacman):
             if action is not 'Stop' or self.enable_stop_action:
                 actions[action] = self.minValue(gameState.generateSuccessor(self.pacman, action), self.depth)
@@ -233,7 +233,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         self.enable_stop_action = False
 
         #actions = {}
-        # la primera llamada la hemos de hacer aqui ya que devemos controlar el movimiento que vamos a hacer
+        # la primera llamada la hemos de hacer aqui ya que debemos controlar el movimiento que vamos a hacer
         #for action in gameState.getLegalActions(self.pacman):
         #    actions[action] = self.minValue(gameState.generateSuccessor(self.pacman, action), self.depth)
         actions = {action: self.minValue(gameState.generateSuccessor(self.pacman, action), alpha, beta, self.depth)
