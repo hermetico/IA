@@ -154,45 +154,41 @@ class MinimaxAgent(MultiAgentSearchAgent):
         #: agente base
         self.pacman = 0
 
+        #:primer ghost
+        self.first_ghost = 1
         #: infinito
         self.oo = float("inf")
 
         #: permitimos 'Stop' action ?
         self.enable_stop_action = False
 
-        #actions = {}
+        actions = {}
         # la primera llamada la hemos de hacer aqui ya que devemos controlar el movimiento que vamos a hacer
-        #for action in gameState.getLegalActions(self.pacman):
-        #    actions[action] = self.minValue(gameState.generateSuccessor(self.pacman, action), self.depth)
-        actions = {action: self.minValue(gameState.generateSuccessor(self.pacman, action), self.depth)
-                   for action in gameState.getLegalActions(self.pacman)
-                   if action is not 'Stop'
-                   or self.enable_stop_action}
+        for action in gameState.getLegalActions(self.pacman):
+            if action is not 'Stop' or self.enable_stop_action:
+                actions[action] = self.minValue(gameState.generateSuccessor(self.pacman, action), self.depth)
+        #actions = {action: self.minValue(gameState.generateSuccessor(self.pacman, action), self.depth)
+        #          for action in gameState.getLegalActions(self.pacman)
+        #           if action is not 'Stop'
+        #           or self.enable_stop_action}
         #devolvemos la accion con maxima utilidad
         return max(actions, key=actions.get)
 
 
-    def minValue(self, gameState, depth, ghost=1):
+    def minValue(self, gameState, depth):
         """
         Calcula los miminos, los acumula en funcion del numero de fantasmas.
         En total hay x agentes y el pacman es el 0, asi que el primer ghost por defecto es 1
-        Mientras haya fantasmas vuelve a llamar a la funcion min, en el momento que ya se han calculado
-        los fantasmas, se llama a la funcion max
         """
         #: si estamos en un estado terminal
         if gameState.isWin() or gameState.isLose() or depth == 0:
             return self.evaluationFunction(gameState)
         #: infinito
         v = self.oo
-        # hay varios ghost, por ello, hemos de hacer un min detras de otro
-        if ghost < (gameState.getNumAgents() - 1):
-            return min([v] + [self.minValue(gameState.generateSuccessor(ghost, action), depth - 1, ghost + 1)
-                              for action in gameState.getLegalActions(ghost)])
-
-        # si es el ultimo ghost, hacemos el max
-        return min([v] + [self.maxValue(gameState.generateSuccessor(ghost, action), depth - 1)
-                          for action in gameState.getLegalActions(ghost)])
-
+        for ghost in range(self.first_ghost, gameState.getNumAgents()):
+            for action in gameState.getLegalActions(ghost):
+                v = min(v, self.maxValue(gameState.generateSuccessor(ghost, action), depth - 1))
+        return v
 
     def maxValue(self, gameState, depth):
         """
@@ -204,10 +200,10 @@ class MinimaxAgent(MultiAgentSearchAgent):
 
         #: menos infinito
         v = -self.oo
-        return max([v] + [self.minValue(gameState.generateSuccessor(self.pacman, action), depth - 1)
-                          for action in gameState.getLegalActions(self.pacman)
-                          if action is not 'Stop'
-                          or self.enable_stop_action])
+        for action in gameState.getLegalActions(self.pacman):
+            if action is not 'Stop' or self.enable_stop_action:
+                v = max(v, self.minValue(gameState.generateSuccessor(self.pacman, action), depth - 1))
+        return v
 
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
@@ -223,6 +219,8 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         #: agente base
         self.pacman = 0
 
+        #: primer ghost
+        self.first_gost = 1
         #infinito
         self.oo = float("inf")
 
@@ -246,7 +244,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         return max(actions, key=actions.get)
 
 
-    def minValue(self, gameState, alpha, beta, depth, ghost=1):
+    def minValue(self, gameState, alpha, beta, depth):
         """
         Calcula los miminos, los acumula en funcion del numero de fantasmas.
         En total hay x agentes y el pacman es el 0, asi que el primer ghost por defecto es 1
@@ -259,26 +257,15 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         #: infinito
         v = self.oo
         # hay varios ghost, por ello, hemos de hacer un min detras de otro
-        if ghost < (gameState.getNumAgents() - 1):
+        for ghost in range(self.first_gost, gameState.getNumAgents()):
             for action in gameState.getLegalActions(ghost):
-                # llamada recursiva
-                v = min(v, self.minValue(gameState.generateSuccessor(ghost, action), alpha, beta, depth - 1,  ghost+1))
-                # si el valor es menor o igual alpha
+            # llamada recursiva
+                v = min(v, self.maxValue(gameState.generateSuccessor(ghost, action), alpha, beta, depth - 1))
+                # si el valor es menor o igual alpha, podamos
                 if v <= alpha:
                     return v
                 # sino, actualizamos beta y seguimos haciendo llamadas
                 beta = min(beta, v)
-            return v
-
-        # si es el ultimo ghost, hacemos el max
-        for action in gameState.getLegalActions(ghost):
-            # llamada recursiva
-            v = min(v, self.maxValue(gameState.generateSuccessor(ghost, action), alpha, beta, depth - 1))
-            # si el valor es menor o igual alpha, podamos
-            if v <= alpha:
-                return v
-            # sino, actualizamos beta y seguimos haciendo llamadas
-            beta = min(beta, v)
         return v
 
 
