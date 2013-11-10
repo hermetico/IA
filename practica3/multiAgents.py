@@ -167,13 +167,17 @@ class MinimaxAgent(MultiAgentSearchAgent):
         for action in gameState.getLegalActions(self.pacman):
             if action is not 'Stop' or self.enable_stop_action:
                 actions[action] = self.minValue(gameState.generateSuccessor(self.pacman, action), self.depth)
-        #actions = {action: self.minValue(gameState.generateSuccessor(self.pacman, action), self.depth)
-        #          for action in gameState.getLegalActions(self.pacman)
-        #           if action is not 'Stop'
-        #           or self.enable_stop_action}
+
+        """
+        # equivalente
+        actions = {action: self.minValue(gameState.generateSuccessor(self.pacman, action), self.depth)
+                  for action in gameState.getLegalActions(self.pacman)
+                   if action is not 'Stop'
+                   or self.enable_stop_action}
+        """
+
         #devolvemos la accion con maxima utilidad
         return max(actions, key=actions.get)
-
 
     def minValue(self, gameState, depth):
         """
@@ -220,7 +224,8 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         self.pacman = 0
 
         #: primer ghost
-        self.first_gost = 1
+        self.first_ghost = 1
+
         #infinito
         self.oo = float("inf")
 
@@ -232,14 +237,20 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         #: permitimos 'Stop' action ?
         self.enable_stop_action = False
 
-        #actions = {}
+        actions = {}
         # la primera llamada la hemos de hacer aqui ya que debemos controlar el movimiento que vamos a hacer
-        #for action in gameState.getLegalActions(self.pacman):
-        #    actions[action] = self.minValue(gameState.generateSuccessor(self.pacman, action), self.depth)
+        for action in gameState.getLegalActions(self.pacman):
+            if action is not 'Stop' or self.enable_stop_action:
+                actions[action] = self.minValue(gameState.generateSuccessor(self.pacman, action), alpha, beta, self.depth)
+
+        """
+        # equivalente
         actions = {action: self.minValue(gameState.generateSuccessor(self.pacman, action), alpha, beta, self.depth)
                    for action in gameState.getLegalActions(self.pacman)
                    if action is not 'Stop'
-        or self.enable_stop_action}
+                   or self.enable_stop_action}
+        """
+
         #devolvemos la accion con maxima utilidad
         return max(actions, key=actions.get)
 
@@ -248,8 +259,6 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         """
         Calcula los miminos, los acumula en funcion del numero de fantasmas.
         En total hay x agentes y el pacman es el 0, asi que el primer ghost por defecto es 1
-        Mientras haya fantasmas vuelve a llamar a la funcion min, en el momento que ya se han calculado
-        los fantasmas, se llama a la funcion max
         """
         #: si estamos en un estado terminal
         if gameState.isWin() or gameState.isLose() or depth == 0:
@@ -257,7 +266,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         #: infinito
         v = self.oo
         # hay varios ghost, por ello, hemos de hacer un min detras de otro
-        for ghost in range(self.first_gost, gameState.getNumAgents()):
+        for ghost in range(self.first_ghost, gameState.getNumAgents()):
             for action in gameState.getLegalActions(ghost):
             # llamada recursiva
                 v = min(v, self.maxValue(gameState.generateSuccessor(ghost, action), alpha, beta, depth - 1))
@@ -302,8 +311,16 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         legal moves.
         """
         "*** YOUR CODE HERE ***"
+        # import random
+        from random import randint as rnd
+
+        self.random = rnd
+
         #: agente base
         self.pacman = 0
+
+        #: primer ghost
+        self.first_ghost = 1
 
         #infinito
         self.oo = float("inf")
@@ -311,10 +328,20 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         #: permitimos 'Stop' action ?
         self.enable_stop_action = False
 
+        actions = {}
+        # la primera llamada la hemos de hacer aqui ya que debemos controlar el movimiento que vamos a hacer
+        for action in gameState.getLegalActions(self.pacman):
+            if action is not 'Stop' or self.enable_stop_action:
+                actions[action] = self.expValue(gameState.generateSuccessor(self.pacman, action), self.depth)
+
+        """
+        # equivalente
         actions = {action: self.expValue(gameState.generateSuccessor(self.pacman, action), self.depth)
                    for action in gameState.getLegalActions(self.pacman)
                    if action is not 'Stop'
-        or self.enable_stop_action}
+                   or self.enable_stop_action}
+        """
+
         #devolvemos la accion con maxima utilidad
         return max(actions, key=actions.get)
 
@@ -336,30 +363,27 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         return v
 
 
-    def expValue(self, gameState, depth, ghost=1):
+    def expValue(self, gameState, depth):
         """
-        Calcula la exp, los acumula en funcion del numero de fantasmas.
+        Calcula los miminos, los acumula en funcion del numero de fantasmas.
         En total hay x agentes y el pacman es el 0, asi que el primer ghost por defecto es 1
-        Mientras haya fantasmas vuelve a llamar a la funcion min, en el momento que ya se han calculado
-        los fantasmas, se llama a la funcion max
+        Los fantasmas siguen una distribucion aleatoria uniforme, por lo tanto, se devolvera un resultado al azar
         """
         #: si estamos en un estado terminal
         if gameState.isWin() or gameState.isLose() or depth == 0:
             return self.evaluationFunction(gameState)
 
-        # hay varios ghost, por ello, hemos de hacer un min detras de otro
+        #: posiblidades por parte de los ghost
         chances = []
-        if ghost < (gameState.getNumAgents() - 1):
+        # recorremos todos los ghtst
+        for ghost in range(self.first_ghost, gameState.getNumAgents()):
+            # legal actions de cada ghost
             for action in gameState.getLegalActions(ghost):
-                # llamada recursiva
-                chances.append(self.expValue(gameState.generateSuccessor(ghost, action), depth - 1,  ghost+1))
-            return sum(chances) / len(chances)
+                # guardamos las posibilidades
+                chances.append(self.maxValue(gameState.generateSuccessor(ghost, action), depth - 1))
 
-        # si es el ultimo ghost, hacemos el max
-        for action in gameState.getLegalActions(ghost):
-            # llamada recursiva
-            chances.append(self.maxValue(gameState.generateSuccessor(ghost, action), depth - 1))
-        return sum(chances) / len(chances)
+        # devolvemos una posibilidad aleatoria
+        return chances[ self.random(0,len(chances) - 1) ]
 
 def betterEvaluationFunction(currentGameState):
     """
@@ -369,7 +393,47 @@ def betterEvaluationFunction(currentGameState):
     DESCRIPTION: <write something here so we know what you did>
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    """
+
+    REVISAR MUY MUCHO
+
+    """
+    #: posicion del pacman
+    pos = currentGameState.getPacmanPosition()
+    #: comida
+    food = currentGameState.getFood()
+    #: posicion de las capsulas
+    pills = currentGameState.getCapsules()
+    #: ghosts
+    ghosts_states = currentGameState.getGhostStates()
+    #: tiempo que le queda a los fantasmas de estar asustados
+    scared_times = [ghostState.scaredTimer for ghostState in ghosts_states]
+
+    oo = float("inf")
+    dist_min = +oo
+    plus_scared = 0
+    ghost_num = 0
+    # guardamos la posicion de los fantasmas respecto a pacman
+    for posFant in ghosts_states:
+        #: distancia respecto a posFant
+        d = manhattanDistance(pos, posFant.getPosition())
+        #: distancia minima respecto los fantasmas
+        dist_min = min(dist_min, d)
+
+        #: valor maximo respecto fantasma asustado * su distancia
+        plus_scared = max(plus_scared, scared_times[ghost_num] * d)
+        ghost_num += 1
+
+    inverse_food_distance = -1
+    for foodPos in food.asList():
+        inverse_food_distance = max(inverse_food_distance, (1.0 / manhattanDistance(pos, foodPos)))
+
+    inverse_food_distance *= 100
+
+    evaluation = (0.3 * currentGameState.getScore()) + (0.1 * dist_min) + (0.3 * plus_scared) \
+                 + (0.3 * inverse_food_distance)
+
+    return evaluation
 
 # Abbreviation
 better = betterEvaluationFunction
