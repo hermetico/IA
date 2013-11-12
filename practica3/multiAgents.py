@@ -70,21 +70,73 @@ class ReflexAgent(Agent):
         else:
             val = distMin
         "*** YOUR CODE HERE ***"
-
+        # si la distancia a los fantasmas es grande, no la tenemos en cuenta
+        #if val > 8:
+        #    val = 0
+        """
+        val /= 10
+        """
+        #: posicion anterior del pacman
+        oldPos = currentGameState.getPacmanPosition()
         ghost_num = 0
+        #inear_ghost = None
+
         # comprobamos si los fantasmas estan en modo asustado
         for posFant in newGhostStates:
-            d = manhattanDistance(newPos, posFant.getPosition())
+            #d = manhattanDistance(newPos, posFant.getPosition())
+
+            # capturamos el fantasma mas cercano
+            #if not near_ghost:
+            #    near_ghost = (d, posFant.getPosition())
+            #else:
+            #    if near_ghost[0] > d:
+            #        near_ghost = (d, posFant.getPosition())
+
             # si estan en modo asustado durante mas pasos que la distancia a ellos
-            # sumamos un plus
+            # sumamos si el fantasma esta en modo asustado y muy cerca, val sera negativo, asi que lo ponemos
+            # en valor asboluto
             if newScaredTimes[ghost_num] > 0:
-                val += 10
-            if newScaredTimes[ghost_num] > d:
-                val += 100
+                val = abs(val) #+ 10 / d
+                #val += 10 * d
+            #if newScaredTimes[ghost_num] > d:
+            #    val = abs(val) #+ 50 / d
+                #val += 20 * d
             ghost_num += 1
+
+        """
+        d_now = float("inf")
+        # comprobamos la comida mas cercana ahora
+        for food in successorGameState.getFood().asList():
+            d_now = min(d_now, manhattanDistance(newPos, food))
+        # si la distancia a la comida es menor que la distancia al fantasma mas cercano, +10
+        if d_now >= distMin:
+            val +=20
+        """
+        """
+        # si moviendonos hemos comido, sumamos +10 el val
+        if successorGameState.getFood().count() < oldFood.count():
+            val += 10
+        """
+        sum_now = 0
+        min_now = 999
+        # comprobamos la suma de las distancias a comida ahora
+        for food in successorGameState.getFood().asList():
+            sum_now += manhattanDistance(newPos, food)
+            min_now = min(min_now, manhattanDistance(newPos, food))
+
+        sum_before = 0
+        min_before = 999
+        # comprobamos la suma de las distancias a las comidas antes
+        for food in oldFood.asList():
+            sum_before += manhattanDistance(oldPos, food)
+            min_before = min(min_before, manhattanDistance(oldPos, food))
+        # si hay menor distancia
+        if min_now < min_before:
+            val += 10
 
         # tambien consideramos que si la accion es quedarse quieto
         # solo devolvemos el score actual
+
         if action == 'Stop':
             return successorGameState.getScore()
         return successorGameState.getScore() + val
@@ -409,6 +461,27 @@ def betterEvaluationFunction(currentGameState):
     #: tiempo que le queda a los fantasmas de estar asustados
     scared_times = [ghostState.scaredTimer for ghostState in ghosts_states]
 
+    base = 100
+
+    distMin = 100
+    val = 0
+
+    for posFant in ghosts_states:
+        d = manhattanDistance(pos, posFant.getPosition())
+        distMin = min(distMin, d)
+
+    if distMin < 3:
+        val -= 100
+    else:
+        val = distMin
+
+    ghost_num = 0
+    for posFant in ghosts_states:
+        if scared_times[ghost_num] > 0:
+            val = abs(val) #+ 50 / (d+1)
+        ghost_num += 1
+
+    """
     oo = float("inf")
     dist_min = +oo
     plus_scared = 0
@@ -423,17 +496,29 @@ def betterEvaluationFunction(currentGameState):
         #: valor maximo respecto fantasma asustado * su distancia
         plus_scared = max(plus_scared, scared_times[ghost_num] * d)
         ghost_num += 1
-
-    inverse_food_distance = -1
+    """
+    dist_food = 0
     for foodPos in food.asList():
-        inverse_food_distance = max(inverse_food_distance, (1.0 / manhattanDistance(pos, foodPos)))
+        dist_food += manhattanDistance(pos, foodPos)
 
-    inverse_food_distance *= 100
+    val += 500 / (dist_food + 1)
+    #val += 200 / (dist_food + 1) / (len(food.asList()) + 1)
+    dist_pill = 0
+    val += 100 / (len(pills) +1)
+
+    #val += 200 / (len(food.asList()) + 1)
+    #for pill in pills:
+    #    dist_pill = manhattanDistance(pos, pill)
+    #    if dist_pill == 1:
+    #        val += 100
+    """
+    #inverse_food_distance *= 100
 
     evaluation = (0.3 * currentGameState.getScore()) + (0.1 * dist_min) + (0.3 * plus_scared) \
                  + (0.3 * inverse_food_distance)
-
-    return evaluation
+    """
+    #return evaluation
+    return currentGameState.getScore() + val
 
 # Abbreviation
 better = betterEvaluationFunction
