@@ -36,7 +36,7 @@ class QLearningAgent(ReinforcementAgent):
         self.q = util.Counter()
 
         #: diccionario de frecuencias para parejas (s,a) inicializado a 0
-        #self.n = util.Counter()
+        self.n = util.Counter()
 
 
     def getQValue(self, state, action):
@@ -60,7 +60,8 @@ class QLearningAgent(ReinforcementAgent):
         "*** YOUR CODE HERE ***"
         # devolvemos el qValor mas alto para las parejas (estado, accion) entre las acciones legales
         # si no hay ninguna retornara 0.0
-
+        if not self.getLegalActions(state):
+            return 0.0
         return max([self.getQValue(state, action) for action in self.getLegalActions(state)])
 
 
@@ -109,8 +110,8 @@ class QLearningAgent(ReinforcementAgent):
         "*** YOUR CODE HERE ***"
 
         # comprobamos si hay legal actions, sino, retornamos None
-        #if not self.getLegalActions(state):
-        #    return action
+        if not self.getLegalActions(state):
+            return action
 
         # lanzamos la moneda con epsilon para decidir que accion retornamos, al azar o best policy
         if util.flipCoin(self.epsilon):
@@ -136,8 +137,14 @@ class QLearningAgent(ReinforcementAgent):
         para ello el qValor pasa a ser la suma del qValor actual + alpha * ( recompensa + (gamma * el qValor mas
          alto para el estado s' )) - el qValor actual
         """
-        if self.getLegalActions(nextState):
-            self.q[state, action] += self.alpha * (
+        if state:
+
+            #: gamma dinamico
+            self.n[(state, action)] += 1
+            #learning_rate = self.alpha / self.n[(state, action)]
+            learning_rate = self.alpha
+            #: update
+            self.q[state, action] += learning_rate * (
                 reward + ((self.gamma * self.getValue(nextState)) - self.getQValue(state, action)))
 
 
