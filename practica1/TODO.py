@@ -11,15 +11,16 @@ from datetime import datetime as dt
 from time import time
 from os import system
 
-#: definimos el patron del timestamp 
-# dia - mes - año hora:minutos-segundos 
+#: definimos el patron del timestamp
+# dia - mes - año hora:minutos-segundos
 TIME_PATHERN = '%d-%m-%Y %H:%M:%S'
 
 #: listado de tasques
 tasques = {}
 
-def timestamp(pathern = None):
-    """Retorna un objecte del tipus datetime  a partir d'un timestamp 
+
+def timestamp(pathern=None):
+    """Retorna un objecte del tipus datetime  a partir d'un timestamp
     com a parametre d'entrada.
     El format per defecte es '%d-%m-%Y'
     """
@@ -35,12 +36,12 @@ class Tasca:
         self.done = False
         self.creacio = timestamp()
         self.finalitzacio = None
-    
+
     def __str__(self):
-        values = { 
-            'fecha' : str(self.creacio), 
-            'id' : self.id, 
-            'desc' : self.descripcio 
+        values = {
+            'fecha': str(self.creacio),
+            'id': self.id,
+            'desc': self.descripcio
         }
         return "%(fecha)s | %(id)i | %(desc)s " % values
 
@@ -55,7 +56,7 @@ class Tasca:
 def pausar():
     """Mostra un avis per pantalla i espera que l'usuari premi una tecla"""
     return raw_input("Prem cualsevol tecla per continuar\n>>> ")
-    
+
 
 def crear_nova_id_tasca():
     """Funcio que crea una id a per a la següent practica
@@ -69,8 +70,8 @@ def crear_nova_id_tasca():
     return max(tasques.keys()) + 1
 
 
-def crear_editar_tasca(id = None):
-    """Funcio que serveix per crear una tasca o editarla segons el parametre 
+def crear_editar_tasca(id=None):
+    """Funcio que serveix per crear una tasca o editarla segons el parametre
     de entrada id
     Si id == None es genera una nova id pera  la tasca
     """
@@ -107,7 +108,7 @@ def mostrar_tasques_finalitzades():
     print "Tasques finalitzades:"
     print "---------------------"
     for i in [ tasca for tasca in tasques.values() if tasca and tasca.done ]:
-        print str(i) + " | " + str(i.finalitzacio) 
+        print str(i) + " | " + str(i.finalitzacio)
     print "---------------------"
 
 
@@ -123,7 +124,7 @@ def eliminar_tasca():
         if confirm  == "y":
             tasques[id] = None
     else:
-        print "Tasca no reconeguda" 
+        print "Tasca no reconeguda"
 
 
 def finalitzar_tasca():
@@ -136,11 +137,11 @@ def finalitzar_tasca():
         if confirm == "y":
             tasques[id].finalitzar()
     else:
-        print "Tasca no reconeguda" 
+        print "Tasca no reconeguda"
 
 def editar_tasca():
     """
-    Mostra les tasques pendents de finalitzar, despres demana la id de la tasca 
+    Mostra les tasques pendents de finalitzar, despres demana la id de la tasca
     a editar i finalment demana la descripcio nova
     """
     mostrar_tasques_no_finalitzades()
@@ -149,32 +150,32 @@ def editar_tasca():
         desc = raw_input("Insereix la nova descripcio:\n>>> ")
         tasques[id].descripcio = desc
     else:
-        print "Tasca no reconeguda" 
+        print "Tasca no reconeguda"
 
 
 def menu():
     opcions_menu = {
-        1 : {
-            'label' : 'Afegir tasca',
-            'funcio' : crear_editar_tasca
+        1: {
+            'label': 'Afegir tasca',
+            'funcio': crear_editar_tasca
         },
-        2 : {
-            'label' : 'Eliminar tasca',
-            'funcio' : eliminar_tasca
+        2: {
+            'label': 'Eliminar tasca',
+            'funcio': eliminar_tasca
         },
-        3 : {
-            'label' : 'Editar tasca',
-            'funcio' : editar_tasca
+        3: {
+            'label': 'Editar tasca',
+            'funcio': editar_tasca
         },
-        4 : {
-            'label' : 'Finalitzar tasca',
-            'funcio' : finalitzar_tasca 
+        4: {
+            'label': 'Finalitzar tasca',
+            'funcio': finalitzar_tasca
         },
-        5 : {
-            'label' : 'Mostrar tasques finalitzades',
-            'funcio' : mostrar_tasques_finalitzades
+        5: {
+            'label': 'Mostrar tasques finalitzades',
+            'funcio': mostrar_tasques_finalitzades
         },
-        9 : { 'label' :'Sortir' }
+        9: {'label': 'Sortir'}
 }
 
     continuar = True
@@ -182,9 +183,9 @@ def menu():
         system('clear')
         for key, value in opcions_menu.items():
             print str(key) + " - " + value['label']
-        
+
         opcio = input(">>> ")
-        
+
         if(opcio in opcions_menu):
             if opcio == 9:
                 continuar = False
@@ -198,7 +199,7 @@ def menu():
 
 
 def debug():
-    """Funcio que ens incorpora una petita shell per interactuar amb 
+    """Funcio que ens incorpora una petita shell per interactuar amb
     el programa, per exemple per debugar"""
     import readline # optional, will allow Up/Down/History in the console
     import code
