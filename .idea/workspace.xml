@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6048e390-a2de-4c4b-a1f7-df13c0034e25" name="Default" comment="minor bug fixes">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/IA.iml" afterPath="$PROJECT_DIR$/.idea/IA.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/practica1/TODO.py" afterPath="$PROJECT_DIR$/practica1/TODO.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/practica3/multiAgents.py" afterPath="$PROJECT_DIR$/practica3/multiAgents.py" />
+    <list default="true" id="6048e390-a2de-4c4b-a1f7-df13c0034e25" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/practica4/qlearningAgents.py" afterPath="$PROJECT_DIR$/practica4/qlearningAgents.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="IA.iws" />
@@ -31,10 +29,19 @@
       <file leaf-file-name="qlearningAgents.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/practica4/qlearningAgents.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="186" column="0" selection-start="6501" selection-end="6501" vertical-scroll-proportion="0.59243697" vertical-offset="2925" max-vertical-offset="3978">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-4.8411765" vertical-offset="3292" max-vertical-offset="4320">
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="searchAgents.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/practica2/searchAgents.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="80" column="34" selection-start="2909" selection-end="2909" vertical-scroll-proportion="0.0" vertical-offset="1350" max-vertical-offset="13950">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -50,20 +57,8 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitLogSettings">
-    <option name="myStructureFilterPaths" />
     <option name="myDateState">
       <MyDateState />
-    </option>
-  </component>
-  <component name="IdeDocumentHistory">
-    <option name="changedFiles">
-      <list>
-        <option value="$PROJECT_DIR$/practica2/searchAgents.py" />
-        <option value="$PROJECT_DIR$/practica3/multiAgents.py" />
-        <option value="$PROJECT_DIR$/practica4/test" />
-        <option value="$PROJECT_DIR$/practica4/file_Test.py" />
-        <option value="$PROJECT_DIR$/practica4/qlearningAgents.py" />
-      </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
@@ -71,25 +66,6 @@
     <option name="y" value="24" />
     <option name="width" value="1871" />
     <option name="height" value="1176" />
-  </component>
-  <component name="ProjectInspectionProfilesVisibleTreeState">
-    <entry key="Project Default">
-      <profile-state>
-        <expanded-state>
-          <State>
-            <id />
-          </State>
-          <State>
-            <id>Python</id>
-          </State>
-        </expanded-state>
-        <selected-state>
-          <State>
-            <id>PyInterpreterInspection</id>
-          </State>
-        </selected-state>
-      </profile-state>
-    </entry>
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -150,102 +126,14 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="IA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="IA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="practica2" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="216" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="229" />
-    <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="recentsLimit" value="5" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="216" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="232" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="1141" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="1141" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="232" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="229" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
-    <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
-    <property name="full.screen.before.presentation.mode" value="false" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
-    <property name="options.lastSelected" value="editor.preferences.appearance" />
-    <property name="restartRequiresConfirmation" value="true" />
-    <property name="options.searchVisible" value="true" />
   </component>
-  <component name="PyConsoleOptionsProvider">
-    <option name="myPythonConsoleState">
-      <PyConsoleSettings />
-    </option>
-  </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/practica4" />
-    </key>
-  </component>
-  <component name="RunManager" selected="Python.gridworld">
-    <configuration default="false" name="pacman" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/practica3" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="IA" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/practica3/pacman.py" />
-      <option name="PARAMETERS" value="-a value -i 100 -g BridgeGrid --discount 0.9 --noise 0.2" />
-      <RunnerSettings RunnerId="PyDebugRunner" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PyDebugRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="gridworld" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/practica4" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="IA" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/practica4/gridworld.py" />
-      <option name="PARAMETERS" value="-a q -k 50 -n 0 -g BridgeGrid -e 0.5 -l 0.5" />
-      <RunnerSettings RunnerId="PyDebugRunner" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PyDebugRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
+  <component name="RunManager">
     <configuration default="true" type="tests" factoryName="py.test">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -367,115 +255,15 @@
       <option name="USE_PATTERN" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="qlearningAgents" type="PythonConfigurationType" factoryName="Python">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/practica4" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="IA" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/practica4/qlearningAgents.py" />
-      <option name="PARAMETERS" value="-a q" />
-      <RunnerSettings RunnerId="PyDebugRunner" />
-      <ConfigurationWrapper RunnerId="PyDebugRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="test" type="PythonConfigurationType" factoryName="Python">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/practica4" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="IA" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/practica4/test" />
-      <option name="PARAMETERS" value="-a q -k 5 -m" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="file_Test" type="PythonConfigurationType" factoryName="Python">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/practica4" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="IA" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/practica4/__valueIterationAgents.py" />
-      <option name="PARAMETERS" value="-a q -k 5 -m" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.qlearningAgents" />
-      <item index="1" class="java.lang.String" itemvalue="Python.test" />
-      <item index="2" class="java.lang.String" itemvalue="Python.file_Test" />
-      <item index="3" class="java.lang.String" itemvalue="Python.pacman" />
-      <item index="4" class="java.lang.String" itemvalue="Python.gridworld" />
-    </list>
-    <recent_temporary>
-      <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="Python.gridworld" />
-        <item index="1" class="java.lang.String" itemvalue="Python.pacman" />
-      </list>
-    </recent_temporary>
+    <list size="0" />
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
-  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false" SSL_PROTOCOLS="all">
-    <option name="USER" value="" />
-    <option name="PASSWORD" value="" />
-    <option name="mySSHConnectionTimeout" value="30000" />
-    <option name="mySSHReadTimeout" value="30000" />
-    <option name="LAST_MERGED_REVISION" />
-    <option name="MERGE_DRY_RUN" value="false" />
-    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
-    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
-    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
-    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
-    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
-    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
-    <option name="FORCE_UPDATE" value="false" />
-    <option name="IGNORE_EXTERNALS" value="false" />
-    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
-  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="6048e390-a2de-4c4b-a1f7-df13c0034e25" name="Default" comment="" />
       <created>1382944749313</created>
       <updated>1382944749313</updated>
     </task>
-    <task id="LOCAL-00002" summary="minor bug fixes">
-      <created>1383421971341</created>
-      <updated>1383421971341</updated>
-    </task>
-    <task id="LOCAL-00003" summary="actualizado a lo que hicimos en clase y desarrollado un poco el ultimo">
-      <created>1384120749072</created>
-      <updated>1384120749072</updated>
-    </task>
-    <task id="LOCAL-00004" summary="mejorado bastante el 1, mejorado el 5">
-      <created>1384297360346</created>
-      <updated>1384297360346</updated>
-    </task>
-    <task id="LOCAL-00005" summary="qagent">
-      <created>1385680130455</created>
-      <updated>1385680130455</updated>
-    </task>
-    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -502,44 +290,25 @@
     <frame x="49" y="24" width="1871" height="1176" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29706717" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27152318" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32923368" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32923368" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32923368" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32992035" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12391775" sideWeight="0.70293283" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31977293" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="-183" y="561" width="1848" height="238" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.254329" sideWeight="0.6707663" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32734153" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3286119" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32923368" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
-    <layout-to-restore>
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29706717" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32923368" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34626302" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="-183" y="561" width="1848" height="238" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32923368" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32923368" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.125" sideWeight="0.653737" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32923368" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -548,120 +317,30 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="minor bug fixes" />
-    <MESSAGE value="actualizado a lo que hicimos en clase y desarrollado un poco el ultimo" />
-    <MESSAGE value="mejorado bastante el 1, mejorado el 5" />
-    <MESSAGE value="qagent" />
-    <option name="LAST_COMMIT_MESSAGE" value="qagent" />
+    <MESSAGE value="utlimo ejercicio" />
+    <option name="LAST_COMMIT_MESSAGE" value="utlimo ejercicio" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/practica3/multiAgents.py</url>
-          <line>282</line>
-          <option name="timeStamp" value="61" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/practica3/multiAgents.py</url>
-          <line>304</line>
-          <option name="timeStamp" value="62" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/practica4/qlearningAgents.py</url>
-          <line>138</line>
-          <option name="timeStamp" value="80" />
-        </line-breakpoint>
-      </breakpoints>
-      <breakpoints-dialog>
-        <breakpoints-dialog />
-      </breakpoints-dialog>
-      <option name="time" value="81" />
-    </breakpoint-manager>
+    <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/practica2/searchAgents.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="88" column="48" selection-start="3258" selection-end="3258" vertical-scroll-proportion="0.0" vertical-offset="1584" max-vertical-offset="13950" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/practica2/searchAgents.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="80" column="34" selection-start="2909" selection-end="2909" vertical-scroll-proportion="0.0" vertical-offset="1440" max-vertical-offset="11718" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/practica2/searchAgents.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="88" column="48" selection-start="3258" selection-end="3258" vertical-scroll-proportion="-0.13392857" vertical-offset="1584" max-vertical-offset="13950" />
-      </provider>
-    </entry>
-    <entry file="file:///usr/lib/python2.7/traceback.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="66" column="0" selection-start="2342" selection-end="2342" vertical-scroll-proportion="0.33333334" vertical-offset="928" max-vertical-offset="5814" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/practica3/game.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="497" column="0" selection-start="14412" selection-end="14412" vertical-scroll-proportion="0.5659824" vertical-offset="8524" max-vertical-offset="9504" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/practica3/pacman.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="582" column="0" selection-start="21229" selection-end="21229" vertical-scroll-proportion="0.3372434" vertical-offset="10120" max-vertical-offset="11034" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/practica3/multiAgents.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="0" selection-start="268" selection-end="268" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="8568">
-          <folding>
-            <element signature="e#0#34#0" expanded="false" />
-          </folding>
+        <state line="80" column="34" selection-start="2909" selection-end="2909" vertical-scroll-proportion="0.0" vertical-offset="1350" max-vertical-offset="13950">
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
+    <entry file="file://$PROJECT_DIR$/practica2/searchAgents.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1142" column="0" selection-start="47510" selection-end="47510" vertical-scroll-proportion="0.33333334" vertical-offset="19138" max-vertical-offset="26496" />
-      </provider>
-    </entry>
-    <entry file="file:///usr/lib/python2.7/random.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="16290" />
-      </provider>
-    </entry>
-    <entry file="file:///usr/lib/python2.7/lib-tk/Tkinter.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1407" column="0" selection-start="56077" selection-end="56077" vertical-scroll-proportion="0.33333334" vertical-offset="25096" max-vertical-offset="67356" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/practica4/learningAgents.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="109" column="53" selection-start="3474" selection-end="3474" vertical-scroll-proportion="0.54202896" vertical-offset="1552" max-vertical-offset="4464" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/practica4/valueIterationAgents.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="95" column="55" selection-start="3146" selection-end="3146" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2232" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/practica4/util.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="374" column="44" selection-start="9902" selection-end="9902" vertical-scroll-proportion="0.19306184" vertical-offset="6568" max-vertical-offset="8838" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/practica4/gridworld.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="10008" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/practica2/autograder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-6.2735295" vertical-offset="4266" max-vertical-offset="6336" />
+        <state line="80" column="34" selection-start="2909" selection-end="2909" vertical-scroll-proportion="0.0" vertical-offset="1350" max-vertical-offset="13950">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/practica4/qlearningAgents.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="186" column="0" selection-start="6501" selection-end="6501" vertical-scroll-proportion="0.59243697" vertical-offset="2925" max-vertical-offset="3978">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-4.8411765" vertical-offset="3292" max-vertical-offset="4320">
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>

@@ -36,7 +36,7 @@ class QLearningAgent(ReinforcementAgent):
         self.q = util.Counter()
 
         #: diccionario de frecuencias para parejas (s,a) inicializado a 0
-        #self.n = util.Counter()
+        self.n = util.Counter()
 
 
     def getQValue(self, state, action):
@@ -60,7 +60,8 @@ class QLearningAgent(ReinforcementAgent):
         "*** YOUR CODE HERE ***"
         # devolvemos el qValor mas alto para las parejas (estado, accion) entre las acciones legales
         # si no hay ninguna retornara 0.0
-
+        if not self.getLegalActions(state):
+            return 0.0
         return max([self.getQValue(state, action) for action in self.getLegalActions(state)])
 
 
@@ -75,7 +76,7 @@ class QLearningAgent(ReinforcementAgent):
         # si no hay acciones retornamos None
         # si hay acciones empatadas, retornamos una al azar
 
-        # para ello, recuperamos las posibles acciones
+        # para ello, recuperamos las posibles acciones con su q valor
         policies = util.Counter(
             {action: self.getQValue(state, action) for action in self.getLegalActions(state)}
         )
@@ -83,7 +84,7 @@ class QLearningAgent(ReinforcementAgent):
         # comprobamos que hay acciones
         if not policies:
             return None
-        #: el q valor mas alto
+            #: el q valor mas alto
         best_q_value = policies[policies.sortedKeys()[0]]
 
         #: creamos una lista con las acciones que tienen un valor igual al valor maximo
@@ -109,16 +110,16 @@ class QLearningAgent(ReinforcementAgent):
         "*** YOUR CODE HERE ***"
 
         # comprobamos si hay legal actions, sino, retornamos None
-        #if not self.getLegalActions(state):
-        #    return action
+        if not legalActions:
+            return action
 
         # lanzamos la moneda con epsilon para decidir que accion retornamos, al azar o best policy
         if util.flipCoin(self.epsilon):
-            # retornamos bestPolicy
-            return self.getPolicy(state)
+            # retornamos una accion al azar, si no devuelve nada retornamos None
+            return random.choice(legalActions) or None
 
-        # retornamos una accion al azar, si no devuelve nada retornamos None
-        return random.choice(self.getLegalActions(state)) or None
+        # retornamos bestPolicy
+        return self.getPolicy(state)
 
 
     def update(self, state, action, nextState, reward):
@@ -136,8 +137,13 @@ class QLearningAgent(ReinforcementAgent):
         para ello el qValor pasa a ser la suma del qValor actual + alpha * ( recompensa + (gamma * el qValor mas
          alto para el estado s' )) - el qValor actual
         """
-        if self.getLegalActions(nextState):
-            self.q[state, action] += self.alpha * (
+        if state:
+            #: gamma dinamico
+            #self.n[(state, action)] += 1
+            #learning_rate = self.alpha / self.n[(state, action)]
+            learning_rate = self.alpha
+            #: update
+            self.q[state, action] += learning_rate * (
                 reward + ((self.gamma * self.getValue(nextState)) - self.getQValue(state, action)))
 
 
@@ -187,6 +193,8 @@ class ApproximateQAgent(PacmanQAgent):
 
         # You might want to initialize weights here.
         "*** YOUR CODE HERE ***"
+        self.features = util.Counter()
+        self.weigths = util.Counter()
 
     def getQValue(self, state, action):
         """
@@ -194,14 +202,25 @@ class ApproximateQAgent(PacmanQAgent):
           where * is the dotProduct operator
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        # recuperamos las features del estado|accion
+        self.features = self.featExtractor.getFeatures(state, action)
+
+        # devolvemos la suma de cada caracteristica * su peso
+        return sum(self.weigths[feature] * self.features[feature] for feature in self.features)
 
     def update(self, state, action, nextState, reward):
         """
            Should update your weights based on transition  
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+        #: definimos el valor de correccion
+        correction = (reward + (self.gamma * self.getValue(nextState))) - self.getQValue(state, action)
+        # actualizamos el peso de cada feature, para ello, recuperamos las features
+        self.features = self.featExtractor.getFeatures(state, action)
+        # y actulizamos las que tenemos, o las ponemos nuevas
+        for feature in self.features:
+            self.weigths[feature] += self.alpha * correction * self.features[feature]
 
     def final(self, state):
         "Called at the end of each game."
