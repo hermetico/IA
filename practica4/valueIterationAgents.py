@@ -30,12 +30,10 @@ class ValueIterationAgent(ValueEstimationAgent):
         self.iterations = iterations
         self.values = util.Counter() # A Counter is a dict with default 0
 
+
         "*** YOUR CODE HERE ***"
         #: S, conjunto de estados
         states = mdp.getStates()
-
-        #: Descuento
-        self.phi = 0.9
 
         #: Vector de utilidades por estado en S, inicialmente a zero
         #vector_utilidad = {}
@@ -47,28 +45,26 @@ class ValueIterationAgent(ValueEstimationAgent):
         k = 0
 
         while k <= iterations:
+            #: U
             self.values = vector_utilidad_iter.copy()
-            delta = 0
+            #: Ruido
+            delta = 0.2
 
             for state in states:
-                actions = mdp.getPossibleActions(state)
-                valores = []
-                for action in actions:
-                    #Rusell
-                    #transition = [t[1] * self.values[t[0]]
-                    #              for t in mdp.getTransitionStatesAndProbs(state, action)]
-
-                    #Sutton
-                    transition = [t[1] * (mdp.getReward(state, action, t[0]) + self.phi * self.values[t[0]])
-                                  for t in mdp.getTransitionStatesAndProbs(state, action)]
-
-                    valores.append(sum(transition))
-
                 if state is not 'TERMINAL_STATE':
+                    actions = mdp.getPossibleActions(state)
+                    valores = []
+                    for action in actions:
+                        #Sutton
+                        #transition = [trans[1] * (mdp.getReward(state, action, trans[0]) + self.discount * self.values[trans[0]])
+                        #              for trans in mdp.getTransitionStatesAndProbs(state, action)]
+
+                        valores.append(self.getQValue(state,action))
+
                     vector_utilidad_iter[state] = max(valores)
 
-                if abs(vector_utilidad_iter[state] - self.values[state]) > delta:
-                    delta = abs(vector_utilidad_iter[state] - self.values[state])
+                    if abs(vector_utilidad_iter[state] - self.values[state]) > delta:
+                        delta = abs(vector_utilidad_iter[state] - self.values[state])
 
             k += 1
 
@@ -76,7 +72,6 @@ class ValueIterationAgent(ValueEstimationAgent):
         """
         Return the value of the state (computed in __init__).
         """
-
         return self.values[state]
 
 
@@ -89,7 +84,9 @@ class ValueIterationAgent(ValueEstimationAgent):
         to derive it on the fly.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        transition = [trans[1] * (self.mdp.getReward(state, action, trans[0]) + self.discount * self.values[trans[0]])
+                              for trans in self.mdp.getTransitionStatesAndProbs(state, action)]
+        return sum(transition)
 
     def getPolicy(self, state):
         """
@@ -102,12 +99,11 @@ class ValueIterationAgent(ValueEstimationAgent):
         "*** YOUR CODE HERE ***"
 
         if state is not 'TERMINAL_STATE':
-
             actions = self.mdp.getPossibleActions(state)
             valores = {}
             for action in actions:
-                transition = [t[1] * (self.mdp.getReward(state, action, t[0]) + self.phi * self.values[t[0]])
-                              for t in self.mdp.getTransitionStatesAndProbs(state, action)]
+                transition = [trans[1] * (self.mdp.getReward(state, action, trans[0]) + self.discount * self.values[trans[0]])
+                              for trans in self.mdp.getTransitionStatesAndProbs(state, action)]
 
                 valores[sum(transition)] = action
 
